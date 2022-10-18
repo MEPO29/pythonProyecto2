@@ -1896,11 +1896,43 @@ def consulta():
 
 def top10():
     pTop10 = Toplevel(root)
-    headers = Label(pTop10, font=("Helvetica", 18))
-    headers.config(text=f'{"El top 10 de sesiones"}')
-    headers.pack()
-    output_label = Label(pTop10, font=("Helvetica", 18))
-    output_label.pack()
+    pTop10.title("Top 10 sesiones que más usuarios tuvieron")
+    pTop10.geometry("1000x500")
+
+    style = ttk.Style()
+    style.theme_use('default')
+    style.configure("Treeview",
+        background="#D3D3D3",
+        foreground="black",
+        rowheight=25,
+        fieldbackground="#D3D3D3")
+
+    style.map('Treeview',
+        background=[('selected', "#347083")])
+    
+    tree_frame = Frame(pTop10)
+    tree_frame.pack(pady=10)
+
+    tree_scroll = Scrollbar(tree_frame)
+    tree_scroll.pack(side=RIGHT, fill=Y)
+
+    my_tree = ttk.Treeview(tree_frame, yscrollcommand=tree_scroll.set, selectmode="extended")
+    my_tree.pack()
+
+    tree_scroll.config(command=my_tree.yview)
+
+    my_tree['columns'] = ("Sesiones", "Cantidad de usuarios")
+
+    my_tree.column("#0", width=0, stretch=NO)
+    my_tree.column("Sesiones", anchor=W, width=140)
+    my_tree.column("Cantidad de usuarios", anchor=W, width=140)
+
+    my_tree.heading("#0", text="", anchor=W)
+    my_tree.heading("Sesiones", text="Sesiones", anchor=W)
+    my_tree.heading("Cantidad de usuarios", text="Cantidad de usuarios", anchor=W)
+
+    my_tree.tag_configure('oddrow', background="white")
+    my_tree.tag_configure('evenrow', background="lightblue")
     conn = psycopg2.connect(
         host = "ec2-34-227-135-211.compute-1.amazonaws.com",
         database = "df9o3sgfvv53o3",
@@ -1915,23 +1947,100 @@ def top10():
     c.execute('''SELECT fk_id_sesion, count(fk_id_sesion) as conteo 
     FROM registro_sesion 
     GROUP BY fk_id_sesion
-    ORDER BY conteo desc''')
+    ORDER BY conteo desc
+    LIMIT 10''')
     records = c.fetchall()
 
     output = ''
-
+    
+    global count
+    count = 0
+    
     for record in records:
-        output_label.config(text=f'{output}\n{record[0]}\t{record[1]}\t{record[2]}')
-        output = output_label['text']
-    c.commit()
-    c.close()
+        if count % 2 == 0:
+            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1]), tags=('evenrow',))
+        else:
+            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1]), tags=('oddrow',))
+        
+        count += 1
+    conn.commit()
+    conn.close()
+
+
 def sesiones_categoria():
     pSesiones = Toplevel(root)
-    headers = Label(pSesiones, font=("Helvetica", 18))
-    headers.config(text=f'{"Cantidad de sesiones por categoria"}')
-    headers.pack()
-    output_label = Label(pSesiones, font=("Helvetica", 18))
-    output_label.pack()
+    pSesiones.title("Cantidad de sesiones y usuarios por categoria")
+    pSesiones.geometry("1000x500")
+
+    style = ttk.Style()
+    style.theme_use('default')
+    style.configure("Treeview",
+        background="#D3D3D3",
+        foreground="black",
+        rowheight=25,
+        fieldbackground="#D3D3D3")
+
+    style.map('Treeview',
+        background=[('selected', "#347083")])
+    
+    tree_frame = Frame(pSesiones)
+    tree_frame.pack(pady=10)
+
+    tree_scroll = Scrollbar(tree_frame)
+    tree_scroll.pack(side=RIGHT, fill=Y)
+
+    my_tree = ttk.Treeview(tree_frame, yscrollcommand=tree_scroll.set, selectmode="extended")
+    my_tree.pack()
+
+    tree_scroll.config(command=my_tree.yview)
+
+    my_tree['columns'] = ("Sesiones", "Cantidad de usuarios", "Categoría")
+
+    my_tree.column("#0", width=0, stretch=NO)
+    my_tree.column("Sesiones", anchor=W, width=140)
+    my_tree.column("Cantidad de usuarios", anchor=W, width=140)
+    my_tree.column("Categoría", anchor=W, width=140)
+    
+
+    my_tree.heading("#0", text="", anchor=W)
+    my_tree.heading("Sesiones", text="Sesiones", anchor=W)
+    my_tree.heading("Cantidad de usuarios", text="Cantidad de usuarios", anchor=W)
+    my_tree.heading("Categoría", text="Categoría", anchor=W)
+
+    my_tree.tag_configure('oddrow', background="white")
+    my_tree.tag_configure('evenrow', background="lightblue")
+    my_tree.tag_configure('oddrow', background="white")
+    conn = psycopg2.connect(
+        host = "ec2-34-227-135-211.compute-1.amazonaws.com",
+        database = "df9o3sgfvv53o3",
+        user = "gxxnvuaorobeeu",
+        password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
+        port = "5432"
+
+    )
+
+    c = conn.cursor()
+
+    c.execute('''SELECT count(id_sesion), count(fk_ID_usuario), categoria
+    FROM sesion join registro_sesion on sesion.id_sesion = registro_sesion.fk_id_sesion
+    GROUP BY categoria''')
+    records = c.fetchall()
+
+    output = ''
+    
+    global count
+    count = 0
+    
+    for record in records:
+        if count % 2 == 0:
+            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1]), tags=('evenrow',))
+        else:
+            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1]), tags=('oddrow',))
+        
+        count += 1
+    conn.commit()
+    conn.close()
+
 
 def top5_entrenadores():
     pTop5 = Toplevel(root)
