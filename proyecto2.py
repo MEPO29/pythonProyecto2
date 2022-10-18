@@ -1804,7 +1804,7 @@ def calendario():
         c = conn.cursor()
 
         c.execute('''
-        SELECT categoria, fk_nombre_instructor, fecha_hora_inicio, fecha_hora_fin FROM sesion
+        SELECT fk_id_sesion, categoria, fk_nombre_instructor, fecha_hora_inicio, fecha_hora_fin FROM sesion
         INNER JOIN registro_sesion
         ON sesion.id_sesion = registro_sesion.fk_id_sesion
         WHERE registro_sesion.fk_id_usuario = %s AND fecha_hora_inicio::TIMESTAMP::DATE = %s
@@ -1817,13 +1817,42 @@ def calendario():
 
         for record in data:
             if count % 2 == 0:
-                my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1], record[2], record[3]), tags=('evenrow',))
+                my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1], record[2], record[3], record[4]), tags=('evenrow',))
             else:
-                my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1], record[2], record[3]), tags=('oddrow',))
+                my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1], record[2], record[3], record[4]), tags=('oddrow',))
             
             count += 1
         conn.commit()
         conn.close()
+
+    def entrarSesion():
+        selected = my_tree.focus()
+        values = my_tree.item(selected, 'values')
+
+        x = my_tree.selection()[0]
+        my_tree.delete(x)
+
+        conn = psycopg2.connect(
+            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
+            database = "df9o3sgfvv53o3",
+            user = "gxxnvuaorobeeu",
+            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
+            port = "5432"
+
+        )
+
+        c = conn.cursor()
+
+        c.execute("DELETE from registro_sesion WHERE fk_id_usuario = %s AND fk_id_sesion = %s", (credenciales[0], values[0]))
+
+        conn.commit()
+
+        conn.close()
+
+        queryDatabase()
+
+        messagebox.showinfo("Sesion", "Has ingresado a la sesión")
+
 
     botonSelec = Button(pCalendario, font="Helvetica 14", text="Seleccionar fecha", command=queryDatabase)
     botonSelec.pack(pady=20)
@@ -1849,15 +1878,17 @@ def calendario():
 
     tree_scroll.config(command=my_tree.yview)
 
-    my_tree['columns'] = ("Categoría", "Nombre del instructor", "Fecha y hora de inicio", "Fecha y hora de fin")
+    my_tree['columns'] = ("ID sesión", "Categoría", "Nombre del instructor", "Fecha y hora de inicio", "Fecha y hora de fin")
 
     my_tree.column("#0", width=0, stretch=NO)
+    my_tree.column("ID sesión", anchor=W, width=140)
     my_tree.column("Categoría", anchor=W, width=140)
     my_tree.column("Nombre del instructor", anchor=W, width=140)
     my_tree.column("Fecha y hora de inicio", anchor=W, width=140)
     my_tree.column("Fecha y hora de fin", anchor=W, width=140)
 
     my_tree.heading("#0", text="", anchor=W)
+    my_tree.heading("ID sesión", text="ID sesión", anchor=W)
     my_tree.heading("Categoría", text="Categoría", anchor=W)
     my_tree.heading("Nombre del instructor", text="Nombre del instructor", anchor=W)
     my_tree.heading("Fecha y hora de inicio", text="Fecha y hora de inicio", anchor=W)
@@ -1865,6 +1896,8 @@ def calendario():
 
     my_tree.tag_configure('oddrow', background="white")
     my_tree.tag_configure('evenrow', background="lightblue")
+    botonEntrar = Button(pCalendario, font="Helvetica 14", text="Ingresar a sesión", command=entrarSesion)
+    botonEntrar.pack(pady=5)
     queryDatabase()
 
 def consulta():
@@ -1897,7 +1930,6 @@ def consulta():
 def top10():
     pTop10 = Toplevel(root)
     pTop10.title("Top 10 sesiones que más usuarios tuvieron")
-    pTop10.geometry("1000x500")
 
     style = ttk.Style()
     style.theme_use('default')
@@ -1970,7 +2002,6 @@ def top10():
 def sesiones_categoria():
     pSesiones = Toplevel(root)
     pSesiones.title("Cantidad de sesiones y usuarios por categoria")
-    pSesiones.geometry("1000x500")
 
     style = ttk.Style()
     style.theme_use('default')
@@ -2021,21 +2052,33 @@ def sesiones_categoria():
 
     c = conn.cursor()
 
-    c.execute('''SELECT count(id_sesion), count(fk_ID_usuario), categoria
-    FROM sesion join registro_sesion on sesion.id_sesion = registro_sesion.fk_id_sesion
-    GROUP BY categoria''')
-    records = c.fetchall()
+    c.execute('''
+    SELECT SUM(sesionCount) as cuentaSesion, SUM(userCount) as cuentaUser, categoria
+    FROM (
+        SELECT      categoria , COUNT(*) sesionCount, 0 userCount
+        FROM        sesion
+        GROUP BY    categoria
 
-    output = ''
+        UNION
+
+        SELECT      categoria, 0, COUNT(*)
+        FROM        sesion
+        JOIN        registro_sesion
+        ON          sesion.id_sesion = registro_sesion.fk_id_sesion
+        GROUP BY    categoria
+    ) cuentas
+    GROUP BY cuentas.categoria
+    ''')
+    records = c.fetchall()
     
     global count
     count = 0
     
     for record in records:
         if count % 2 == 0:
-            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1]), tags=('evenrow',))
+            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1], record[2]), tags=('evenrow',))
         else:
-            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1]), tags=('oddrow',))
+            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1], record[2]), tags=('oddrow',))
         
         count += 1
     conn.commit()
@@ -2062,7 +2105,6 @@ def top5_entrenadores():
 
     pInstructor = Toplevel(root)
     pInstructor.title("Administrador de instructores")
-    pInstructor.geometry("1000x500")
 
     style = ttk.Style()
     style.theme_use('default')
@@ -2086,15 +2128,15 @@ def top5_entrenadores():
 
     tree_scroll.config(command=my_tree.yview)
 
-    my_tree['columns'] = ("Nombre de instructor", "Apellido de instructor")
+    my_tree['columns'] = ("Nombre de instructor", "Cantidad")
 
     my_tree.column("#0", width=0, stretch=NO)
     my_tree.column("Nombre de instructor", anchor=W, width=140)
-    my_tree.column("Apellido de instructor", anchor=W, width=140)
+    my_tree.column("Cantidad", anchor=W, width=140)
 
     my_tree.heading("#0", text="", anchor=W)
     my_tree.heading("Nombre de instructor", text="Nombre de instructor", anchor=W)
-    my_tree.heading("Apellido de instructor", text="Apellido de instructor", anchor=W)
+    my_tree.heading("Cantidad", text="Cantidad", anchor=W)
 
     my_tree.tag_configure('oddrow', background="white")
     my_tree.tag_configure('evenrow', background="lightblue")
@@ -2135,7 +2177,6 @@ def cuen_diamante():
 
     pInstructor = Toplevel(root)
     pInstructor.title("Administrador de instructores")
-    pInstructor.geometry("1000x500")
 
     style = ttk.Style()
     style.theme_use('default')
@@ -2159,15 +2200,15 @@ def cuen_diamante():
 
     tree_scroll.config(command=my_tree.yview)
 
-    my_tree['columns'] = ("Nombre de instructor", "Apellido de instructor")
+    my_tree['columns'] = ("Tipo", "Cantidad")
 
     my_tree.column("#0", width=0, stretch=NO)
-    my_tree.column("Nombre de instructor", anchor=W, width=140)
-    my_tree.column("Apellido de instructor", anchor=W, width=140)
+    my_tree.column("Tipo", anchor=W, width=140)
+    my_tree.column("Cantidad", anchor=W, width=140)
 
     my_tree.heading("#0", text="", anchor=W)
-    my_tree.heading("Nombre de instructor", text="Nombre de instructor", anchor=W)
-    my_tree.heading("Apellido de instructor", text="Apellido de instructor", anchor=W)
+    my_tree.heading("Tipo", text="Tipo", anchor=W)
+    my_tree.heading("Cantidad", text="Cantidad", anchor=W)
 
     my_tree.tag_configure('oddrow', background="white")
     my_tree.tag_configure('evenrow', background="lightblue")
@@ -2184,7 +2225,6 @@ def cuen_diamante():
         count += 1
     conn.commit()
     conn.close()
-
 
 def reportes():
     pReportes = Toplevel(root)
