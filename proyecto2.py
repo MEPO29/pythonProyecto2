@@ -1,4 +1,3 @@
-from calendar import calendar
 from tkcalendar import *
 from tkinter import *
 from tkinter import ttk
@@ -1482,7 +1481,7 @@ def sesiones():
         fecha_button = Button(fecha_frame, text="Buscar fecha", command=search_fecha)
         fecha_button.pack(padx=20)
 
-        hora_frame = LabelFrame(search, text="Hora")
+        hora_frame = LabelFrame(search, text="Hora (Número de 0 a 23)")
         hora_frame.pack(padx=10, pady=10)
 
         hora_entry = Entry(hora_frame, font=("Helvetica", 18))
@@ -1491,7 +1490,7 @@ def sesiones():
         hora_button = Button(hora_frame, text="Buscar hora", command=search_hora)
         hora_button.pack(padx=20)
 
-        dura_frame = LabelFrame(search, text="Duración")
+        dura_frame = LabelFrame(search, text="Duración (Cantidad de minutos)")
         dura_frame.pack(padx=10, pady=10)
 
         dura_entry = Entry(dura_frame, font=("Helvetica", 18))
