@@ -1328,7 +1328,34 @@ def suscripcion():
         extenderSub.grid(row=1)
 
     elif fechaExp[0] >= datetime.today().date():
+        def cancelarSub():
+            conn = psycopg2.connect(
+            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
+            database = "df9o3sgfvv53o3",
+            user = "gxxnvuaorobeeu",
+            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
+            port = "5432"
+
+            )
+
+            c = conn.cursor()
+
+            c.execute('''
+            DELETE FROM suscripcion
+            WHERE fk_id_usuario = %s
+            ''', (credenciales[0],))
+            
+            conn.commit()
+            conn.close()
+
+            labelStatus.config(fg='red',text="No se encuentra suscrito actualmente")
+            botonCancelar.destroy()
+            messagebox.showinfo("Cancelada", "Su suscripción fue cancelada con éxito")
+
         labelStatus.config(fg='green',text="Su suscripción se encuentra activa")
+        botonCancelar = Button(psus, text="Cancelar suscripción", command=cancelarSub)
+        botonCancelar.grid(row=2)
+        
     else:
         labelStatus.config(fg='red',text="No se encuentra suscrito actualmente")
         extenderSub = Button(psus, text="Extender suscripción", bg='sky blue', font=("Helvetica", 18), command=botonSub)
