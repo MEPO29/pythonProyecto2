@@ -1894,8 +1894,82 @@ def consulta():
         output_label.config(text=f'{output}\n{record[0]}\t{record[1]}\t{record[2]}')
         output = output_label['text']
 
+def top10():
+    pTop10 = Toplevel(root)
+    headers = Label(pTop10, font=("Helvetica", 18))
+    headers.config(text=f'{"El top 10 de sesiones"}')
+    headers.pack()
+    output_label = Label(pTop10, font=("Helvetica", 18))
+    output_label.pack()
+    conn = psycopg2.connect(
+        host = "ec2-34-227-135-211.compute-1.amazonaws.com",
+        database = "df9o3sgfvv53o3",
+        user = "gxxnvuaorobeeu",
+        password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
+        port = "5432"
+
+    )
+
+    c = conn.cursor()
+
+    c.execute('''SELECT fk_id_sesion, count(fk_id_sesion) as conteo 
+    FROM registro_sesion 
+    GROUP BY fk_id_sesion
+    ORDER BY conteo desc''')
+    records = c.fetchall()
+
+    output = ''
+
+    for record in records:
+        output_label.config(text=f'{output}\n{record[0]}\t{record[1]}\t{record[2]}')
+        output = output_label['text']
+    c.commit()
+    c.close()
+def sesiones_categoria():
+    pSesiones = Toplevel(root)
+    headers = Label(pSesiones, font=("Helvetica", 18))
+    headers.config(text=f'{"Cantidad de sesiones por categoria"}')
+    headers.pack()
+    output_label = Label(pSesiones, font=("Helvetica", 18))
+    output_label.pack()
+
+def top5_entrenadores():
+    pTop5 = Toplevel(root)
+    headers = Label(pTop5, font=("Helvetica", 18))
+    headers.config(text=f'{"El top 5 de entrenadores"}')
+    headers.pack()
+    output_label = Label(pTop5, font=("Helvetica", 18))
+    output_label.pack()
+
+def cuen_diamante():
+    pCuenta = Toplevel(root)
+    headers = Label(pCuenta, font=("Helvetica", 18))
+    headers.config(text=f'{"Cuentas diamante en los últimos meses"}')
+    headers.pack()
+    output_label = Label(pCuenta, font=("Helvetica", 18))
+    output_label.pack()
+
 def reportes():
-    print(1)
+    pReportes = Toplevel(root)
+    headers = Label(pReportes, font=("Helvetica", 18))
+    headers.config(text=f'{"Reportes"}')
+    headers.pack()
+    output_label = Label(pReportes, font=("Helvetica", 18))
+    output_label.pack()
+    root.geometry('100x100')
+    top10_boton = Button(pReportes, text = "El top 10 de sesiones", font=("Helvetica", 18), command=top10)
+    top10_boton.pack(padx=20)
+
+    sesiones_button = Button(pReportes, text = "Sesiones por categoría", font = ("Helvetica", 18), command = sesiones_categoria)
+    sesiones_button.pack(padx = 20)
+
+    top5_button = Button(pReportes, text = "El top 5 entrenadores",font=("Helvetica", 18), command=top5_entrenadores)
+    top5_button.pack(padx = 20)
+
+    cuentas_diamante_button = Button(pReportes, text = "La cantidad de cuentas diamante",font=("Helvetica", 18), command=cuen_diamante)
+    cuentas_diamante_button.pack(padx = 20)
+
+    
 
 #crearTablas()
 #insertAdm()
