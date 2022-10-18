@@ -284,7 +284,6 @@ def validarLogin():
             botonSuscripcion = Button(mainSc, text='Suscripción', bg='sky blue', font=("Helvetica", 18), command=suscripcion).grid(row=1,pady=10,padx=10)
             botonSesiones = Button(mainSc, text='Sesiones', bg='sky blue', font=("Helvetica", 18), command=sesiones).grid(row=2,pady=10,padx=10)
             botonConsulta = Button(mainSc, text='Registro de peso', bg='sky blue', font=("Helvetica", 18), command=consulta).grid(row=3,pady=10,padx=10)
-            botonReportes = Button(mainSc, text='Reportería', bg='sky blue', font=("Helvetica", 18), command=reportes).grid(row=4,pady=10,padx=10)
             botonCalendario = Button(mainSc, text='Calendario', bg='sky blue', font=("Helvetica", 18), command=calendario).grid(row=5,pady=10,padx=10)
             notifNuevoPeso = Label(mainSc, font=("Helvetica", 16))
             notifNuevoPeso.grid(row=6,pady=10)
@@ -403,6 +402,8 @@ def validarAdminLogin():
             botonInstructores = Button(padmin, text='Editar instructores', bg='sky blue', font=("Helvetica", 18), command=AdmInstructor).grid(row=1,pady=10,padx=10)
             botonSesiones = Button(padmin, text='Editar sesiones', bg='sky blue', font=("Helvetica", 18), command=AdmSesion).grid(row=2,pady=10,padx=10)
             botonUsuarios = Button(padmin, text='Editar usuarios', bg='sky blue', font=("Helvetica", 18), command=AdmUsuario).grid(row=3,pady=10,padx=10)
+            botonReportes = Button(padmin, text='Reportería', bg='sky blue', font=("Helvetica", 18), command=reportes).grid(row=4,pady=10,padx=10)
+
 
     except (Exception, psycopg2.Error) as error:
         loginNotif.config(fg="red", text= "Credenciales incorrectos")
