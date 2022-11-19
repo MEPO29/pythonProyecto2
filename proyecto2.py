@@ -153,10 +153,41 @@ def displayUsuarios():
     )
 
     c = conn.cursor()
-
-    
-
-# PANTALLA SIGNUP
+#
+#def triggers():
+#    conn = psycopg2.connect(
+#        host = "ec2-34-227-135-211.compute-1.amazonaws.com",
+#        database = "df9o3sgfvv53o3",
+#        user = "gxxnvuaorobeeu",
+#        password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
+#        port = "5432"
+#
+#    )
+#
+#    c = conn.cursor()
+#
+#    c.execute('''
+#    create or replace function bitacora()
+#    return trigger as $$
+#    declare 
+#	    usuario varchar(20) := user;
+#	    fecha date := current_date;
+#	    tiempo time := current_time;
+#    begin
+#	    insert into 'log_admin' values (usuario, 'modificar instructores', fecha, tiempo)
+#	    return new;
+#    end
+#    $$
+#    language plpgsql
+#
+#    create trigger mod_instructores
+#    before update
+#    ''')
+#
+#    conn.commit()
+#    conn.close()
+#
+## PANTALLA SIGNUP
 
 def signup():
     frame = Toplevel(root)
