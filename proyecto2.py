@@ -8,15 +8,19 @@ from datetime import datetime, timedelta, date
 
 root = Tk()
 root.title('App SmartWatch')
-
+host1 = "localhost"
+database1 = "Proyecto3"
+user1 = "postgres"
+password1 = "admin"
+port1 = "5432"
 def crearTablas():
 
     conn = psycopg2.connect(
-        host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-        database = "df9o3sgfvv53o3",
-        user = "gxxnvuaorobeeu",
-        password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-        port = "5432"
+        host = host1,
+        database = database1,
+        user = user1,
+        password = password1,
+        port = port1
 
     )
 
@@ -80,11 +84,11 @@ def crearTablas():
 
 def insertAdm():
     conn = psycopg2.connect(
-        host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-        database = "df9o3sgfvv53o3",
-        user = "gxxnvuaorobeeu",
-        password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-        port = "5432"
+        host = host1,
+        database = database1,
+        user = user1,
+        password = password1,
+        port = port1
 
     )
 
@@ -106,11 +110,11 @@ def crearTriggers():
 
 def funcionReg():
     conn = psycopg2.connect(
-        host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-        database = "df9o3sgfvv53o3",
-        user = "gxxnvuaorobeeu",
-        password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-        port = "5432"
+        host = host1,
+        database = database1,
+        user = user1,
+        password = password1,
+        port = port1
 
     )
 
@@ -144,11 +148,11 @@ def funcionReg():
 
 def displayUsuarios():
     conn = psycopg2.connect(
-        host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-        database = "df9o3sgfvv53o3",
-        user = "gxxnvuaorobeeu",
-        password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-        port = "5432"
+        host = host1,
+        database = database1,
+        user = user1,
+        password = password1,
+        port = port1
 
     )
 
@@ -156,11 +160,11 @@ def displayUsuarios():
 #
 #def triggers():
 #    conn = psycopg2.connect(
-#        host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-#        database = "df9o3sgfvv53o3",
-#        user = "gxxnvuaorobeeu",
-#        password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-#        port = "5432"
+#        host = host1,
+#        database = database1,
+#        user = user1,
+#        password = password1,
+#        port = port1
 #
 #    )
 #
@@ -286,11 +290,11 @@ def login():
 def validarLogin():
     try:
         conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
         )
 
@@ -335,13 +339,13 @@ def validarLogin():
             datediffPeso = c.fetchone()
 
             if datediffPeso[0] >= 7:
-                def nuevoPeso():
+                def nuevoPeso(host1, database1, user1, password1, port1):
                     conn = psycopg2.connect(
-                    host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-                    database = "df9o3sgfvv53o3",
-                    user = "gxxnvuaorobeeu",
-                    password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-                    port = "5432"
+                    host = host1,
+                    database = database1,
+                    user = user1,
+                    password = password1,
+                    port = port1
 
                     )
 
@@ -416,11 +420,11 @@ def adminLogin():
 def validarAdminLogin():
     try:
         conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
         )
 
@@ -450,11 +454,11 @@ def validarAdminLogin():
 
 def Admadmins():
     conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
         )
 
@@ -470,14 +474,14 @@ def Admadmins():
     conn.commit()
     conn.close()
 
-    def borrarAdm():
+    def borrarAdm(host1, database1, user1, password1, port1):
        
         conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
         )
 
@@ -499,11 +503,11 @@ def Admadmins():
 
     def add_adminU():
         conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
         )
 
@@ -522,11 +526,11 @@ def Admadmins():
 
     def add_adminS():
         conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
         )
 
@@ -573,11 +577,11 @@ def Admadmins():
 
 def AdmInstructor():
     conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
         )
 
@@ -643,11 +647,11 @@ def AdmInstructor():
         my_tree.delete(x)
 
         conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
         )
 
@@ -678,11 +682,11 @@ def AdmInstructor():
                 my_tree.delete(record)
 
             conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
             )
 
@@ -706,11 +710,11 @@ def AdmInstructor():
     def update_record():
 
         conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
         )
 
@@ -737,11 +741,11 @@ def AdmInstructor():
 
     def add_record():
         conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
         )
 
@@ -762,11 +766,11 @@ def AdmInstructor():
         my_tree.delete(*my_tree.get_children())
 
         conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
         )
 
@@ -834,11 +838,11 @@ def AdmInstructor():
 
 def AdmSesion():
     conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
         )
 
@@ -909,11 +913,11 @@ def AdmSesion():
         my_tree.delete(x)
 
         conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
         )
 
@@ -944,11 +948,11 @@ def AdmSesion():
                 my_tree.delete(record)
 
             conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
             )
 
@@ -975,11 +979,11 @@ def AdmSesion():
     def update_record():
 
         conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
         )
 
@@ -1012,11 +1016,11 @@ def AdmSesion():
 
     def add_record():
         conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
         )
 
@@ -1040,11 +1044,11 @@ def AdmSesion():
         my_tree.delete(*my_tree.get_children())
 
         conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
         )
 
@@ -1133,11 +1137,11 @@ def AdmSesion():
 
 def AdmUsuario():
     conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
         )
 
@@ -1215,12 +1219,11 @@ def AdmUsuario():
         my_tree.delete(x)
 
         conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
-
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
         )
 
         c = conn.cursor()
@@ -1250,11 +1253,11 @@ def AdmUsuario():
                 my_tree.delete(record)
 
             conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
             )
 
@@ -1284,11 +1287,11 @@ def AdmUsuario():
     def update_record():
 
         conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
         )
 
@@ -1327,11 +1330,11 @@ def AdmUsuario():
 
     def add_record():
         conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
         )
 
@@ -1358,11 +1361,11 @@ def AdmUsuario():
         my_tree.delete(*my_tree.get_children())
 
         conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
         )
 
@@ -1464,12 +1467,11 @@ def AdmUsuario():
 
 def suscripcion():
     conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
-
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
         )
 
     c = conn.cursor()
@@ -1492,11 +1494,11 @@ def suscripcion():
     elif fechaExp[0] >= datetime.today().date():
         def cancelarSub():
             conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
             )
 
@@ -1566,12 +1568,11 @@ def submitSuscripcion():
     elif seleccion == "Diamante":
         longSub = 90
     conn = psycopg2.connect(
-        host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-        database = "df9o3sgfvv53o3",
-        user = "gxxnvuaorobeeu",
-        password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-        port = "5432"
-
+        host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
     )
 
     c = conn.cursor()
@@ -1596,11 +1597,11 @@ def sesiones():
             my_tree.delete(item)
 
         conn = psycopg2.connect(
-                host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-                database = "df9o3sgfvv53o3",
-                user = "gxxnvuaorobeeu",
-                password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-                port = "5432"
+                host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
             )
 
@@ -1630,11 +1631,11 @@ def sesiones():
     
     def add_record():
         conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
         )
 
@@ -1715,11 +1716,11 @@ def sesiones():
             my_tree.delete(record)
         
         conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
         )
 
@@ -1756,11 +1757,11 @@ def sesiones():
             my_tree.delete(record)
         
         conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
         )
 
@@ -1797,11 +1798,11 @@ def sesiones():
             my_tree.delete(record)
         
         conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
         )
 
@@ -1838,12 +1839,11 @@ def sesiones():
             my_tree.delete(record)
         
         conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
-
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
         )
 
         c = conn.cursor()
@@ -1879,12 +1879,11 @@ def sesiones():
             my_tree.delete(record)
         
         conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
-
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
         )
 
         c = conn.cursor()
@@ -1982,11 +1981,11 @@ def calendario():
             my_tree.delete(item)
 
         conn = psycopg2.connect(
-                host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-                database = "df9o3sgfvv53o3",
-                user = "gxxnvuaorobeeu",
-                password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-                port = "5432"
+                host = host1,
+                database = database1,
+                user = user1,
+                password = password1,
+                port = port1
 
             )
 
@@ -2022,11 +2021,11 @@ def calendario():
         my_tree.delete(x)
 
         conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
         )
 
@@ -2097,11 +2096,11 @@ def consulta():
     output_label = Label(pConsultaPeso, font=("Helvetica", 18))
     output_label.pack()
     conn = psycopg2.connect(
-        host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-        database = "df9o3sgfvv53o3",
-        user = "gxxnvuaorobeeu",
-        password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-        port = "5432"
+        host = host1,
+        database = database1,
+        user = user1,
+        password = password1,
+        port = port1
 
     )
 
@@ -2155,11 +2154,11 @@ def top10():
     my_tree.tag_configure('oddrow', background="white")
     my_tree.tag_configure('evenrow', background="lightblue")
     conn = psycopg2.connect(
-        host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-        database = "df9o3sgfvv53o3",
-        user = "gxxnvuaorobeeu",
-        password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-        port = "5432"
+        host = host1,
+        database = database1,
+        user = user1,
+        password = password1,
+        port = port1
 
     )
 
@@ -2231,11 +2230,11 @@ def sesiones_categoria():
     my_tree.tag_configure('evenrow', background="lightblue")
     my_tree.tag_configure('oddrow', background="white")
     conn = psycopg2.connect(
-        host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-        database = "df9o3sgfvv53o3",
-        user = "gxxnvuaorobeeu",
-        password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-        port = "5432"
+        host = host1,
+        database = database1,
+        user = user1,
+        password = password1,
+        port = port1
 
     )
 
@@ -2275,12 +2274,11 @@ def sesiones_categoria():
 
 def top5_entrenadores():
     conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
-
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
         )
 
     c = conn.cursor()
@@ -2346,11 +2344,11 @@ def top5_entrenadores():
 
 def cuen_diamante():
     conn = psycopg2.connect(
-            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
-            database = "df9o3sgfvv53o3",
-            user = "gxxnvuaorobeeu",
-            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
-            port = "5432"
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
 
         )
 
