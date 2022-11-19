@@ -67,6 +67,12 @@ def crearTablas():
     CREATE TABLE IF NOT EXISTS admin
     (user_admin VARCHAR PRIMARY KEY,
     pass_admin VARCHAR);
+
+    create table if not exists log_admin
+    (fk_user_admin varchar references admin(user_admin),
+    accion varchar,
+    fecha date,
+    tiempo time);
     ''')
 
     conn.commit()
