@@ -470,7 +470,7 @@ def Admadmins():
     conn.commit()
     conn.close()
 
-    def borrarUno():
+    def borrarAdm():
        
         conn = psycopg2.connect(
             host = "ec2-34-227-135-211.compute-1.amazonaws.com",
@@ -497,7 +497,7 @@ def Admadmins():
         fn_entry.delete(0, END)
         ln_entry.delete(0, END)
 
-    def add_record():
+    def add_adminU():
         conn = psycopg2.connect(
             host = "ec2-34-227-135-211.compute-1.amazonaws.com",
             database = "df9o3sgfvv53o3",
@@ -519,6 +519,8 @@ def Admadmins():
 
         despejar_casillas()
 
+
+    def add_adminS():
         conn = psycopg2.connect(
             host = "ec2-34-227-135-211.compute-1.amazonaws.com",
             database = "df9o3sgfvv53o3",
@@ -529,14 +531,18 @@ def Admadmins():
         )
 
         c = conn.cursor()
-
-        c.execute("SELECT * FROM instructor")
-        data = c.fetchall()
-        global count
-        count = 0
+        c.execute("INSERT INTO instructor VALUES (%s,%s)",
+            (
+                fn_entry.get(),
+                ln_entry.get(),
+            ))
 
         conn.commit()
         conn.close()
+
+        despejar_casillas()
+
+        
 
     data_frame = LabelFrame(pInstructor, text="Selección")
     data_frame.pack(fill="x", expand="yes", padx=20)
@@ -555,13 +561,13 @@ def Admadmins():
     button_frame.pack(fill="x", expand="yes", padx=20)
    
 
-    add_button = Button(button_frame, text="Agregar administrador de usuarios", command=add_record)
+    add_button = Button(button_frame, text="Agregar administrador de usuarios", command=add_adminU)
     add_button.grid(row=0, column=0, padx=10, pady=10)
 
-    remove_one_button = Button(button_frame, text="Agregar administrador de sesiones", command=borrarUno)
+    remove_one_button = Button(button_frame, text="Agregar administrador de sesiones", command=add_adminS)
     remove_one_button.grid(row=0, column=3, padx=10, pady=10)
 
-    remove_one_button = Button(button_frame, text="Eliminar administrador de usuarios", command=borrarUno)
+    remove_one_button = Button(button_frame, text="Eliminar administrador de usuarios", command=borrarAdm)
     remove_one_button.grid(row=0, column=5, padx=10, pady=10)
 
 
