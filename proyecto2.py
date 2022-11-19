@@ -436,15 +436,277 @@ def validarAdminLogin():
             padmin = Toplevel(root)
             padmin.title("Funciones de administrador")
 
-            botonInstructores = Button(padmin, text='Editar instructores', bg='sky blue', font=("Helvetica", 18), command=AdmInstructor).grid(row=1,pady=10,padx=10)
-            botonSesiones = Button(padmin, text='Editar sesiones', bg='sky blue', font=("Helvetica", 18), command=AdmSesion).grid(row=2,pady=10,padx=10)
-            botonUsuarios = Button(padmin, text='Editar usuarios', bg='sky blue', font=("Helvetica", 18), command=AdmUsuario).grid(row=3,pady=10,padx=10)
-            botonReportes = Button(padmin, text='Reportería', bg='sky blue', font=("Helvetica", 18), command=reportes).grid(row=4,pady=10,padx=10)
+            botoneditaradmin = Button(padmin, text='Editar administradores', bg='sky blue', font=("Helvetica", 18), command=Admadmins).grid(row=1,pady=10,padx=10)
+            botonInstructores = Button(padmin, text='Editar instructores', bg='sky blue', font=("Helvetica", 18), command=AdmInstructor).grid(row=2,pady=10,padx=10)
+            botonSesiones = Button(padmin, text='Editar sesiones', bg='sky blue', font=("Helvetica", 18), command=AdmSesion).grid(row=3,pady=10,padx=10)
+            botonUsuarios = Button(padmin, text='Editar usuarios', bg='sky blue', font=("Helvetica", 18), command=AdmUsuario).grid(row=4,pady=10,padx=10)
+            botonReportes = Button(padmin, text='Reportería', bg='sky blue', font=("Helvetica", 18), command=reportes).grid(row=5,pady=10,padx=10)
 
 
     except (Exception, psycopg2.Error) as error:
         loginNotif.config(fg="red", text= "Credenciales incorrectos")
         print(error)
+
+
+def Admadmins():
+    conn = psycopg2.connect(
+            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
+            database = "df9o3sgfvv53o3",
+            user = "gxxnvuaorobeeu",
+            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
+            port = "5432"
+
+        )
+
+    c = conn.cursor()
+
+    c.execute("SELECT * FROM instructor")
+    data = c.fetchall()
+
+    pInstructor = Toplevel(root)
+    pInstructor.title("Administrador de instructores")
+    pInstructor.geometry("1000x500")
+
+    style = ttk.Style()
+    style.theme_use('default')
+    style.configure("Treeview",
+        background="#D3D3D3",
+        foreground="black",
+        rowheight=25,
+        fieldbackground="#D3D3D3")
+
+    style.map('Treeview',
+        background=[('selected', "#347083")])
+    
+    tree_frame = Frame(pInstructor)
+    tree_frame.pack(pady=10)
+
+    tree_scroll = Scrollbar(tree_frame)
+    tree_scroll.pack(side=RIGHT, fill=Y)
+
+    my_tree = ttk.Treeview(tree_frame, yscrollcommand=tree_scroll.set, selectmode="extended")
+    my_tree.pack()
+
+    tree_scroll.config(command=my_tree.yview)
+
+    my_tree['columns'] = ("Nombre de instructor", "Apellido de instructor")
+
+    my_tree.column("#0", width=0, stretch=NO)
+    my_tree.column("Nombre de instructor", anchor=W, width=140)
+    my_tree.column("Apellido de instructor", anchor=W, width=140)
+
+    my_tree.heading("#0", text="", anchor=W)
+    my_tree.heading("Nombre de instructor", text="Nombre de instructor", anchor=W)
+    my_tree.heading("Apellido de instructor", text="Apellido de instructor", anchor=W)
+
+    my_tree.tag_configure('oddrow', background="white")
+    my_tree.tag_configure('evenrow', background="lightblue")
+
+    global count
+    count = 0
+
+    for record in data:
+        if count % 2 == 0:
+            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1]), tags=('evenrow',))
+        else:
+            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1]), tags=('oddrow',))
+        
+        count += 1
+    conn.commit()
+    conn.close()
+
+    def borrarUno():
+        x = my_tree.selection()[0]
+        my_tree.delete(x)
+
+        conn = psycopg2.connect(
+            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
+            database = "df9o3sgfvv53o3",
+            user = "gxxnvuaorobeeu",
+            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
+            port = "5432"
+
+        )
+
+        c = conn.cursor()
+
+        c.execute("DELETE from instructor WHERE nombre_instructor = %s", (fn_entry.get(),))
+
+        conn.commit()
+
+        conn.close()
+
+        despejar_casillas()
+
+        messagebox.showinfo("Eliminado!", "Eliminado exitósamente")
+
+    def borrarMuchos():
+        response = messagebox.askyesno("Seguridad", "Esto borrará todas las selecciones\nEstá seguro!")
+
+        if response == 1:
+            x = my_tree.selection()
+
+            ids_to_delete = []
+            
+            for record in x:
+                ids_to_delete.append(my_tree.item(record, 'values')[0])
+
+            for record in x:
+                my_tree.delete(record)
+
+            conn = psycopg2.connect(
+            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
+            database = "df9o3sgfvv53o3",
+            user = "gxxnvuaorobeeu",
+            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
+            port = "5432"
+
+            )
+
+            c = conn.cursor()
+            
+            for record in ids_to_delete:
+                c.execute('''DELETE FROM instructor WHERE nombre_instructor = %s''', (record,))
+
+            ids_to_delete = []
+
+            conn.commit()
+
+            conn.close()
+
+            despejar_casillas()
+
+    def despejar_casillas():
+        fn_entry.delete(0, END)
+        ln_entry.delete(0, END)
+
+    def update_record():
+
+        conn = psycopg2.connect(
+            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
+            database = "df9o3sgfvv53o3",
+            user = "gxxnvuaorobeeu",
+            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
+            port = "5432"
+
+        )
+
+        c = conn.cursor()
+        selected = my_tree.focus()
+        values = my_tree.item(selected, 'values')
+        c.execute("""UPDATE instructor SET
+            nombre_instructor = %s,
+            apellido_instructor = %s
+
+            WHERE nombre_instructor = %s""",
+            (
+                fn_entry.get(),
+                ln_entry.get(),
+                values[0]
+            ))
+
+        conn.commit()
+        conn.close()
+
+        my_tree.item(selected, text="", values=(fn_entry.get(), ln_entry.get()))
+
+        despejar_casillas()
+
+    def add_record():
+        conn = psycopg2.connect(
+            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
+            database = "df9o3sgfvv53o3",
+            user = "gxxnvuaorobeeu",
+            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
+            port = "5432"
+
+        )
+
+        c = conn.cursor()
+
+        c.execute("INSERT INTO instructor VALUES (%s,%s)",
+            (
+                fn_entry.get(),
+                ln_entry.get(),
+            ))
+
+        conn.commit()
+
+        conn.close()
+
+        despejar_casillas()
+
+        my_tree.delete(*my_tree.get_children())
+
+        conn = psycopg2.connect(
+            host = "ec2-34-227-135-211.compute-1.amazonaws.com",
+            database = "df9o3sgfvv53o3",
+            user = "gxxnvuaorobeeu",
+            password = "79a7195588a3d2fdf251c3e6d473e4071e3bc0f01662248df01f3d61de8e9d16",
+            port = "5432"
+
+        )
+
+        c = conn.cursor()
+
+        c.execute("SELECT * FROM instructor")
+        data = c.fetchall()
+        global count
+        count = 0
+
+        for record in data:
+            if count % 2 == 0:
+                my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1]), tags=('evenrow',))
+            else:
+                my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1]), tags=('oddrow',))
+            
+            count += 1
+        
+        conn.commit()
+        conn.close()
+
+    def select_record(e):
+        fn_entry.delete(0, END)
+        ln_entry.delete(0, END)
+
+        selected = my_tree.focus()
+        values = my_tree.item(selected, 'values')
+
+        fn_entry.insert(0, values[0])
+        ln_entry.insert(0, values[1])
+
+
+    data_frame = LabelFrame(pInstructor, text="Selección")
+    data_frame.pack(fill="x", expand="yes", padx=20)
+
+    fn_label = Label(data_frame, text="Usuario")
+    fn_label.grid(row=0, column=0, padx=10, pady=10)
+    fn_entry = Entry(data_frame)
+    fn_entry.grid(row=0, column=1, padx=10, pady=10)
+
+    ln_label = Label(data_frame, text="Constraseña")
+    ln_label.grid(row=0, column=2, padx=10, pady=10)
+    ln_entry = Entry(data_frame)
+    ln_entry.grid(row=0, column=3, padx=10, pady=10)
+
+    button_frame = LabelFrame(pInstructor, text="Funciones")
+    button_frame.pack(fill="x", expand="yes", padx=20)
+
+   
+
+    add_button = Button(button_frame, text="Agregar administrador", command=add_record)
+    add_button.grid(row=0, column=0, padx=10, pady=10)
+
+    remove_one_button = Button(button_frame, text="Eliminar administrador", command=borrarUno)
+    remove_one_button.grid(row=0, column=3, padx=10, pady=10)
+
+
+
+    my_tree.bind("<ButtonRelease-1>", select_record)
+
+    
+    
+    
 
 def AdmInstructor():
     conn = psycopg2.connect(
