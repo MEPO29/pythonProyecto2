@@ -291,60 +291,60 @@ def trigger_instructor():
     c = conn.cursor()
 
     c.execute('''
-    drop function if exists bitacora()
+    drop function if exists bitacora();
     create or replace function bitacora1()
-    return trigger as $$
+    returns trigger as $$
     declare 
 	    usuario varchar(20) := user;
 	    fecha date := current_date;
 	    tiempo time := current_time;
     begin
-	    insert into 'log_admin' values (usuario, 'modificar instructores', fecha, tiempo)
+	    insert into log_admin values (usuario, 'modificar instructores', fecha, tiempo);
 	    return new;
     end;
     $$
-    language plpgsql
+    language plpgsql;
 
-    create or replace trigger mod_instructores
+    create trigger mod_instructores
     before update
     on instructor
-    for each row execute porcedure bitacora1();
+    for each row execute procedure bitacora1();
 
     create or replace function bitacora2()
-    return trigger as $$
+    returns trigger as $$
     declare 
 	    usuario varchar(20) := user;
 	    fecha date := current_date;
 	    tiempo time := current_time;
     begin
-	    insert into 'log_admin' values (usuario, 'eliminar instructores', fecha, tiempo)
+	    insert into log_admin values (usuario, 'eliminar instructores', fecha, tiempo);
 	    return new;
     end;
     $$
-    language plpgsql
+    language plpgsql;
 
-    create or replace trigger del_instructores
+    create trigger del_instructores
     before delete
     on instructor
-    for each row execute porcedure bitacora2();
+    for each row execute procedure bitacora2();
 
     create or replace function bitacora3()
-    return trigger as $$
+    returns trigger as $$
     declare 
 	    usuario varchar(20) := user;
 	    fecha date := current_date;
 	    tiempo time := current_time;
     begin
-	    insert into 'log_admin' values (usuario, 'crear instructores', fecha, tiempo)
+	    insert into log_admin values (usuario, 'crear instructores', fecha, tiempo);
 	    return new;
     end;
     $$
-    language plpgsql
+    language plpgsql;
 
-    create or replace trigger ins_instructores
+    create trigger ins_instructores
     after insert
     on instructor
-    for each row execute porcedure bitacora3();
+    for each row execute procedure bitacora3();
     ''')
 
     conn.commit()
@@ -364,58 +364,58 @@ def trigger_usuario():
 
     c.execute('''
     create or replace function bitacora4()
-    return trigger as $$
+    returns trigger as $$
     declare 
 	    usuario varchar(20) := user;
 	    fecha date := current_date;
 	    tiempo time := current_time;
     begin
-	    insert into 'log_admin' values (usuario, 'modificar usuario', fecha, tiempo)
+	    insert into log_admin values (usuario, 'modificar usuario', fecha, tiempo);
 	    return new;
     end;
     $$
-    language plpgsql
+    language plpgsql;
 
     create or replace trigger mod_usuario
-    before 
+    before update
     on usuario
-    for each row execute porcedure bitacora4();
+    for each row execute procedure bitacora4();
 
     create or replace function bitacora5()
-    return trigger as $$
+    returns trigger as $$
     declare 
 	    usuario varchar(20) := user;
 	    fecha date := current_date;
 	    tiempo time := current_time;
     begin
-	    insert into 'log_admin' values (usuario, 'eliminar usuario', fecha, tiempo)
+	    insert into log_admin values (usuario, 'eliminar usuario', fecha, tiempo);
 	    return new;
     end;
     $$
-    language plpgsql
+    language plpgsql;
 
-    create or replace trigger del_usuario
+    create trigger del_usuario
     before delete
     on usuario
-    for each row execute porcedure bitacora5();
+    for each row execute procedure bitacora5();
 
     create or replace function bitacora6()
-    return trigger as $$
+    returns trigger as $$
     declare 
 	    usuario varchar(20) := user;
 	    fecha date := current_date;
 	    tiempo time := current_time;
     begin
-	    insert into 'log_admin' values (usuario, 'crear usuario', fecha, tiempo)
+	    insert into log_admin values (usuario, 'crear usuario', fecha, tiempo);
 	    return new;
     end;
     $$
-    language plpgsql
+    language plpgsql;
 
-    create or replace trigger ins_usuario
+    create trigger ins_usuario
     after insert
     on usuario
-    for each row execute porcedure bitacora6();
+    for each row execute procedure bitacora6();
     ''')
 
     conn.commit()
@@ -435,58 +435,58 @@ def trigger_sesiones():
 
     c.execute('''
     create or replace function bitacora7()
-    return trigger as $$
+    returns trigger as $$
     declare 
 	    usuario varchar(20) := user;
 	    fecha date := current_date;
 	    tiempo time := current_time;
     begin
-	    insert into 'log_admin' values (usuario, 'modificar sesion', fecha, tiempo)
+	    insert into log_admin values (usuario, 'modificar sesion', fecha, tiempo);
 	    return new;
     end;
     $$
-    language plpgsql
+    language plpgsql;
 
-    create or replace trigger mod_sesiones
-    before 
+    create trigger mod_sesiones
+    before update
     on sesion
-    for each row execute porcedure bitacora7();
+    for each row execute procedure bitacora7();
 
     create or replace function bitacora8()
-    return trigger as $$
+    returns trigger as $$
     declare 
 	    usuario varchar(20) := user;
 	    fecha date := current_date;
 	    tiempo time := current_time;
     begin
-	    insert into 'log_admin' values (usuario, 'eliminar sesion', fecha, tiempo)
+	    insert into log_admin values (usuario, 'eliminar sesion', fecha, tiempo);
 	    return new;
     end;
     $$
-    language plpgsql
+    language plpgsql;
 
-    create or replace trigger del_sesion
+    create trigger del_sesion
     before delete
     on sesion
-    for each row execute porcedure bitacora8();
+    for each row execute procedure bitacora8();
 
     create or replace function bitacora9()
-    return trigger as $$
+    returns trigger as $$
     declare 
 	    usuario varchar(20) := user;
 	    fecha date := current_date;
 	    tiempo time := current_time;
     begin
-	    insert into 'log_admin' values (usuario, 'crear sesion', fecha, tiempo)
+	    insert into log_admin values (usuario, 'crear sesion', fecha, tiempo);
 	    return new;
     end;
     $$
-    language plpgsql
+    language plpgsql;
 
-    create or replace trigger ins_sesion
+    create trigger ins_sesion
     after insert
     on sesion
-    for each row execute porcedure bitacora9();
+    for each row execute procedure bitacora9();
     ''')
 
     conn.commit()
@@ -2644,6 +2644,81 @@ def top10():
     conn.commit()
     conn.close()
 
+def bitacora():
+    pBitacora = Toplevel(root)
+    pBitacora.title("Bitácora de operaciones en el sistema")
+
+    style = ttk.Style()
+    style.theme_use('default')
+    style.configure("Treeview",
+        background="#D3D3D3",
+        foreground="black",
+        rowheight=25,
+        fieldbackground="#D3D3D3")
+
+    style.map('Treeview',
+        background=[('selected', "#347083")])
+    
+    tree_frame = Frame(pBitacora)
+    tree_frame.pack(pady=10)
+
+    tree_scroll = Scrollbar(tree_frame)
+    tree_scroll.pack(side=RIGHT, fill=Y)
+
+    my_tree = ttk.Treeview(tree_frame, yscrollcommand=tree_scroll.set, selectmode="extended")
+    my_tree.pack()
+
+    tree_scroll.config(command=my_tree.yview)
+
+    my_tree['columns'] = ("Usuario", "Accion", "Fecha", "Hora")
+
+    my_tree.column("#0", width=0, stretch=NO)
+    my_tree.column("Usuario", anchor = W, width = 120)
+    my_tree.column("Accion", ancho = W, width = 120)
+    my_tree.column("Fecha", anchor = W, width = 120)
+    my_tree.column("Hora", anchor = W, width = 120)
+
+    my_tree.heading("#0", text="", anchor=W)
+    my_tree.heading("Usuario", text="Usuario", anchor=W)
+    my_tree.heading("Accion", text="Accion", anchor=W)
+    my_tree.heading("Fecha", text="Fecha", anchor=W)
+    my_tree.heading("Hora", text="Hora", anchor=W)
+
+    my_tree.tag_configure('oddrow', background="white")
+    my_tree.tag_configure('evenrow', background="lightblue")
+    my_tree.tag_configure('oddrow', background="white")
+    my_tree.tag_configure('evenrow', background="lightblue")
+    
+    conn = psycopg2.connect(
+        host = host1,
+        database = database1,
+        user = user1,
+        password = password1,
+        port = port1
+
+    )
+
+    c = conn.cursor()
+
+    c.execute('''SELECT * 
+    FROM log_admin 
+    ''')
+    records = c.fetchall()
+
+    output = ''
+    
+    global count
+    count = 0
+    
+    for record in records:
+        if count % 2 == 0:
+            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1]), tags=('evenrow',))
+        else:
+            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1]), tags=('oddrow',))
+        
+        count += 1
+    conn.commit()
+    conn.close()
 
 def sesiones_categoria():
     pSesiones = Toplevel(root)
@@ -2891,14 +2966,16 @@ def reportes():
     cuentas_diamante_button = Button(pReportes, text = "La cantidad de cuentas diamante",font=("Helvetica", 18), command=cuen_diamante)
     cuentas_diamante_button.pack(padx = 20)
 
+    bitacora_button = Button(pReportes, text = "Bitacora",font=("Helvetica", 18), command=bitacora)
+    bitacora_button.pack(padx = 20)
     
 
-#crearTablas()
+crearTablas()
 #insertAdm()
 #CreacionGrupos()
 #crearPrivilegios()
 #CreacionRoles()
-crearTriggers()
+#crearTriggers()
 Button(root, text='Login', command= login, font=("Helvetica", 24)).grid(row=0)
 Button(root, text='Registro', command=signup, font=("Helvetica", 24)).grid(row=1)
 Button(root, text='Admin', command=tiposAdmin, font=("Helvetica", 24)).grid(row=2)
