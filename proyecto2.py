@@ -14,6 +14,12 @@ database1 = "proyecto3"
 user1 = "postgres"
 password1 = "Belmar.2017"
 port1 = "5432"
+user2 = "usuariou1"
+password2 = "adminu1"
+user3 = "usuariose1"
+password3 = "adminse1"
+user4 = "superuser1"
+password4 = "superadmin1"
 def crearTablas():
 
     conn = psycopg2.connect(
@@ -152,8 +158,8 @@ def crearPrivilegios():
 
     c.execute('''
 
-    --GRANT ALL PRIVILEGES ON table usuario, progreso, suscripcion TO admin_usuarios WITH GRANT OPTION 
-    --GRANT ALL PRIVILEGES ON table  sesion, registro_sesion, instructor TO admin_sesiones WITH GRANT OPTION 
+    --GRANT ALL PRIVILEGES ON table adminu, usuario, progreso, suscripcion TO admin_usuarios WITH GRANT OPTION 
+    --GRANT ALL PRIVILEGES ON table  admins, sesion, registro_sesion, instructor TO admin_sesiones WITH GRANT OPTION 
     --GRANT ALL PRIVILEGES ON table usuario, sesion ,suscripcion , registro_sesion , adminu, admins, superadm  , instructor, log_admin , progreso  TO super_admin with GRANT OPTION
 
     ''')
@@ -507,7 +513,7 @@ def validarLogin():
 def tiposAdmin():
     padmin = Toplevel(root)
     padmin.title("Funciones de administrador")
-    botoneditaradmin = Button(padmin, text='Administrador de usuarios', bg='sky blue', font=("Helvetica", 18), command=adminUsuariosLogin()).grid(row=1,pady=10,padx=10)
+    botoneditaradmin = Button(padmin, text='Administrador de usuarios', bg='sky blue', font=("Helvetica", 18), command=adminUsuariosLogin).grid(row=1,pady=10,padx=10)
     botonInstructores = Button(padmin, text='Administrador de sesiones', bg='sky blue', font=("Helvetica", 18), command=adminSesionesLogin).grid(row=2,pady=10,padx=10)
     botonSesiones = Button(padmin, text='Superadministrador', bg='sky blue', font=("Helvetica", 18), command=SuperAdminLogin).grid(row=3,pady=10,padx=10)
     
@@ -519,7 +525,7 @@ def adminUsuariosLogin():
     global padminLogin
 
     padminLogin = Toplevel(root)
-    padminLogin.title("Admin Login")
+    padminLogin.title("Admin Usuario Login")
 
     l_adminLogin = Label(padminLogin, text= "ID de usuario:")
     l_adminLogin.grid(row= 0, column= 0, pady= 10, padx= 10)
@@ -544,8 +550,8 @@ def validarAdminULogin():
         conn = psycopg2.connect(
             host = host1,
             database = database1,
-            user = user1,
-            password = password1,
+            user = user2,
+            password = password2,
             port = port1)
             
 
@@ -579,7 +585,7 @@ def adminSesionesLogin():
     global padminLogin
 
     padminLogin = Toplevel(root)
-    padminLogin.title("Admin Login")
+    padminLogin.title("Admin Sesiones Login")
 
     l_adminLogin = Label(padminLogin, text= "ID de usuario:")
     l_adminLogin.grid(row= 0, column= 0, pady= 10, padx= 10)
@@ -604,8 +610,8 @@ def validarAdminSeLogin():
         conn = psycopg2.connect(
             host = host1,
             database = database1,
-            user = user1,
-            password = password1,
+            user = user3,
+            password = password3,
             port = port1)
             
 
@@ -637,7 +643,7 @@ def SuperAdminLogin():
     global padminLogin
 
     padminLogin = Toplevel(root)
-    padminLogin.title("Admin Login")
+    padminLogin.title("SuperAdmin Login")
 
     l_adminLogin = Label(padminLogin, text= "ID de usuario:")
     l_adminLogin.grid(row= 0, column= 0, pady= 10, padx= 10)
@@ -662,8 +668,8 @@ def validarSuperadminLogin():
         conn = psycopg2.connect(
             host = host1,
             database = database1,
-            user = user1,
-            password = password1,
+            user = user4,
+            password = password4,
             port = port1)
             
 
@@ -693,38 +699,38 @@ def Admadmins():
     conn = psycopg2.connect(
             host = host1,
             database = database1,
-            user = user1,
-            password = password1,
+            user = user4,
+            password = password4,
             port = port1
 
         )
 
     c = conn.cursor()
 
-    c.execute("SELECT * FROM instructor")
+    c.execute("SELECT * FROM admins")
     data = c.fetchall()
 
-    pInstructor = Toplevel(root)
-    pInstructor.title("Administrador de instructores")
-    pInstructor.geometry("1000x500")
+    pAdministrador = Toplevel(root)
+    pAdministrador.title("Editar administradores")
+    pAdministrador.geometry("1000x500")
 
     conn.commit()
     conn.close()
 
-    def borrarAdm(host1, database1, user1, password1, port1):
+    def borrarAdmS(host1, database1, user4, password4, port1):
        
         conn = psycopg2.connect(
             host = host1,
             database = database1,
-            user = user1,
-            password = password1,
+            user = user4,
+            password = password4,
             port = port1
 
         )
 
         c = conn.cursor()
 
-        c.execute("DELETE from instructor WHERE nombre_instructor = %s", (fn_entry.get(),))
+        c.execute("DELETE from admins WHERE user_admin = %s", (fn_entry.get(),))
 
         conn.commit()
 
@@ -732,7 +738,34 @@ def Admadmins():
 
         despejar_casillas()
 
-        messagebox.showinfo("Eliminado!", "Eliminado exitósamente")
+        messagebox.showinfo("Administrador Eliminado!", "Eliminado exitósamente")
+
+    def despejar_casillas():
+        fn_entry.delete(0, END)
+        ln_entry.delete(0, END)
+
+    def borrarAdmU(host1, database1, user4, password4, port1):
+       
+        conn = psycopg2.connect(
+            host = host1,
+            database = database1,
+            user = user4,
+            password = password4,
+            port = port1
+
+        )
+
+        c = conn.cursor()
+
+        c.execute("DELETE from adminu WHERE user_admin = %s", (fn_entry.get(),))
+
+        conn.commit()
+
+        conn.close()
+
+        despejar_casillas()
+
+        messagebox.showinfo("Administrador Eliminado!", "Eliminado exitósamente")
 
     def despejar_casillas():
         fn_entry.delete(0, END)
@@ -742,14 +775,14 @@ def Admadmins():
         conn = psycopg2.connect(
             host = host1,
             database = database1,
-            user = user1,
-            password = password1,
+            user = user4,
+            password = password4,
             port = port1
 
         )
 
         c = conn.cursor()
-        c.execute("INSERT INTO instructor VALUES (%s,%s)",
+        c.execute("INSERT INTO adminu VALUES (%s,%s)",
             (
                 fn_entry.get(),
                 ln_entry.get(),
@@ -772,7 +805,7 @@ def Admadmins():
         )
 
         c = conn.cursor()
-        c.execute("INSERT INTO instructor VALUES (%s,%s)",
+        c.execute("INSERT INTO admins VALUES (%s,%s)",
             (
                 fn_entry.get(),
                 ln_entry.get(),
@@ -785,7 +818,7 @@ def Admadmins():
 
         
 
-    data_frame = LabelFrame(pInstructor, text="Selección")
+    data_frame = LabelFrame(pAdministrador, text="Selección")
     data_frame.pack(fill="x", expand="yes", padx=20)
 
     fn_label = Label(data_frame, text="Usuario")
@@ -798,7 +831,7 @@ def Admadmins():
     ln_entry = Entry(data_frame)
     ln_entry.grid(row=0, column=3, padx=10, pady=10)
 
-    button_frame = LabelFrame(pInstructor, text="Funciones")
+    button_frame = LabelFrame(pAdministrador, text="Funciones")
     button_frame.pack(fill="x", expand="yes", padx=20)
    
 
@@ -808,7 +841,10 @@ def Admadmins():
     remove_one_button = Button(button_frame, text="Agregar administrador de sesiones", command=add_adminS)
     remove_one_button.grid(row=0, column=3, padx=10, pady=10)
 
-    remove_one_button = Button(button_frame, text="Eliminar administrador de usuarios", command=borrarAdm)
+    remove_one_button = Button(button_frame, text="Eliminar administrador de usuarios", command=borrarAdmU)
+    remove_one_button.grid(row=0, column=5, padx=10, pady=10)
+
+    remove_one_button = Button(button_frame, text="Eliminar administrador de sesiones", command=borrarAdmS)
     remove_one_button.grid(row=0, column=5, padx=10, pady=10)
 
 
