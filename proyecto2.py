@@ -421,81 +421,81 @@ def trigger_usuario():
     conn.commit()
     conn.close()
 
-##def trigger_sesiones():
-##    conn = psycopg2.connect(
-##        host = host1,
-##        database = database1,
-##        user = user1,
-##        password = password1,
-##        port = port1
-##
-##    )
-##
-##    c = conn.cursor()
-##
-##    c.execute('''
-##    create or replace function bitacora7()
-##    return trigger as $$
-##    declare 
-##	    usuario varchar(20) := user;
-##	    fecha date := current_date;
-##	    tiempo time := current_time;
-##    begin
-##	    insert into 'log_admin' values (usuario, 'modificar sesion', fecha, tiempo)
-##	    return new;
-##    end;
-##    $$
-##    language plpgsql
-##
-##    create or replace trigger mod_sesiones
-##    before 
-##    on sesion
-##    for each row execute porcedure bitacora7();
-##
-##    create or replace function bitacora8()
-##    return trigger as $$
-##    declare 
-##	    usuario varchar(20) := user;
-##	    fecha date := current_date;
-##	    tiempo time := current_time;
-##    begin
-##	    insert into 'log_admin' values (usuario, 'eliminar sesion', fecha, tiempo)
-##	    return new;
-##    end;
-##    $$
-##    language plpgsql
-##
-##    create or replace trigger del_sesion
-##    before delete
-##    on sesion
-##    for each row execute porcedure bitacora8();
-##
-##    create or replace function bitacora6()
-##    return trigger as $$
-##    declare 
-##	    usuario varchar(20) := user;
-##	    fecha date := current_date;
-##	    tiempo time := current_time;
-##    begin
-##	    insert into 'log_admin' values (usuario, 'crear usuario', fecha, tiempo)
-##	    return new;
-##    end;
-##    $$
-##    language plpgsql
-##
-##    create or replace trigger ins_usuario
-##    after insert
-##    on usuario
-##    for each row execute porcedure bitacora6();
-##    ''')
-##
-##    conn.commit()
-##    conn.close()
-##
+def trigger_sesiones():
+    conn = psycopg2.connect(
+        host = host1,
+        database = database1,
+        user = user1,
+        password = password1,
+        port = port1
+
+    )
+
+    c = conn.cursor()
+
+    c.execute('''
+    create or replace function bitacora7()
+    return trigger as $$
+    declare 
+	    usuario varchar(20) := user;
+	    fecha date := current_date;
+	    tiempo time := current_time;
+    begin
+	    insert into 'log_admin' values (usuario, 'modificar sesion', fecha, tiempo)
+	    return new;
+    end;
+    $$
+    language plpgsql
+
+    create or replace trigger mod_sesiones
+    before 
+    on sesion
+    for each row execute porcedure bitacora7();
+
+    create or replace function bitacora8()
+    return trigger as $$
+    declare 
+	    usuario varchar(20) := user;
+	    fecha date := current_date;
+	    tiempo time := current_time;
+    begin
+	    insert into 'log_admin' values (usuario, 'eliminar sesion', fecha, tiempo)
+	    return new;
+    end;
+    $$
+    language plpgsql
+
+    create or replace trigger del_sesion
+    before delete
+    on sesion
+    for each row execute porcedure bitacora8();
+
+    create or replace function bitacora9()
+    return trigger as $$
+    declare 
+	    usuario varchar(20) := user;
+	    fecha date := current_date;
+	    tiempo time := current_time;
+    begin
+	    insert into 'log_admin' values (usuario, 'crear sesion', fecha, tiempo)
+	    return new;
+    end;
+    $$
+    language plpgsql
+
+    create or replace trigger ins_sesion
+    after insert
+    on sesion
+    for each row execute porcedure bitacora9();
+    ''')
+
+    conn.commit()
+    conn.close()
 
 def crearTriggers():
     trigger_usuario()
     trigger_instructor()
+    trigger_sesiones()
 ## PANTALLA SIGNUP
 
 def signup():
