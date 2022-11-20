@@ -10,9 +10,9 @@ from datetime import datetime, timedelta, date
 root = Tk()
 root.title('App SmartWatch')
 host1 = "localhost"
-database1 = "proyecto3"
+database1 = "Proyecto3"
 user1 = "postgres"
-password1 = "Belmar.2017"
+password1 = "admin"
 port1 = "5432"
 user2 = "usuariou1"
 password2 = "adminu1"
@@ -20,6 +20,7 @@ user3 = "usuariose1"
 password3 = "adminse1"
 user4 = "superuser1"
 password4 = "superadmin1"
+
 def crearTablas():
 
     conn = psycopg2.connect(
@@ -92,7 +93,7 @@ def crearTablas():
     pass_admin VARCHAR);
 
     create table if not exists log_admin
-    (fk_user_admin varchar references admin(user_admin),
+    (usuario varchar,
     accion varchar,
     fecha date,
     tiempo time);
@@ -135,9 +136,9 @@ def CreacionGrupos():
     c = conn.cursor()
 
     c.execute('''
-    --CREATE GROUP admin_usuarios
-    --CREATE GROUP admin_sesiones
-    --CREATE GROUP super_admin
+    CREATE GROUP admin_usuarios;
+    CREATE GROUP admin_sesiones;
+    CREATE GROUP super_admin;
 
     ''')
 
@@ -158,9 +159,11 @@ def crearPrivilegios():
 
     c.execute('''
 
-    --GRANT ALL PRIVILEGES ON table adminu, usuario, progreso, suscripcion TO admin_usuarios WITH GRANT OPTION 
-    --GRANT ALL PRIVILEGES ON table  admins, sesion, registro_sesion, instructor TO admin_sesiones WITH GRANT OPTION 
-    --GRANT ALL PRIVILEGES ON table usuario, sesion ,suscripcion , registro_sesion , adminu, admins, superadm  , instructor, log_admin , progreso  TO super_admin with GRANT OPTION
+    GRANT ALL PRIVILEGES ON table adminu, usuario, progreso, suscripcion TO admin_usuarios WITH GRANT OPTION; 
+    GRANT INSERT ON log_admin to admin_usuarios;
+    GRANT ALL PRIVILEGES ON table  admins, sesion, registro_sesion, instructor TO admin_sesiones WITH GRANT OPTION; 
+    GRANT INSERT ON log_admin to admin_sesiones;
+    GRANT ALL PRIVILEGES ON table usuario, sesion ,suscripcion , registro_sesion , adminu, admins, superadm  , instructor, log_admin , progreso  TO super_admin with GRANT OPTION;
 
     ''')
 
@@ -277,40 +280,222 @@ def displayUsuarios():
     )
 
     c = conn.cursor()
-#
-#def triggers():
-#    conn = psycopg2.connect(
-#        host = host1,
-#        database = database1,
-#        user = user1,
-#        password = password1,
-#        port = port1
-#
-#    )
-#
-#    c = conn.cursor()
-#
-#    c.execute('''
-#    create or replace function bitacora()
-#    return trigger as $$
-#    declare 
-#	    usuario varchar(20) := user;
-#	    fecha date := current_date;
-#	    tiempo time := current_time;
-#    begin
-#	    insert into 'log_admin' values (usuario, 'modificar instructores', fecha, tiempo)
-#	    return new;
-#    end
-#    $$
-#    language plpgsql
-#
-#    create trigger mod_instructores
-#    before update
-#    ''')
-#
-#    conn.commit()
-#    conn.close()
-#
+
+def trigger_instructor():
+
+    conn = psycopg2.connect(
+        host = host1,
+        database = database1,
+        user = user1,
+        password = password1,
+        port = port1
+
+    )
+
+    c = conn.cursor()
+
+    c.execute('''
+    drop function if exists bitacora()
+    create or replace function bitacora1()
+    return trigger as $$
+    declare 
+	    usuario varchar(20) := user;
+	    fecha date := current_date;
+	    tiempo time := current_time;
+    begin
+	    insert into 'log_admin' values (usuario, 'modificar instructores', fecha, tiempo)
+	    return new;
+    end;
+    $$
+    language plpgsql
+
+    create or replace trigger mod_instructores
+    before update
+    on instructor
+    for each row execute porcedure bitacora1();
+
+    create or replace function bitacora2()
+    return trigger as $$
+    declare 
+	    usuario varchar(20) := user;
+	    fecha date := current_date;
+	    tiempo time := current_time;
+    begin
+	    insert into 'log_admin' values (usuario, 'eliminar instructores', fecha, tiempo)
+	    return new;
+    end;
+    $$
+    language plpgsql
+
+    create or replace trigger del_instructores
+    before delete
+    on instructor
+    for each row execute porcedure bitacora2();
+
+    create or replace function bitacora3()
+    return trigger as $$
+    declare 
+	    usuario varchar(20) := user;
+	    fecha date := current_date;
+	    tiempo time := current_time;
+    begin
+	    insert into 'log_admin' values (usuario, 'crear instructores', fecha, tiempo)
+	    return new;
+    end;
+    $$
+    language plpgsql
+
+    create or replace trigger ins_instructores
+    after insert
+    on instructor
+    for each row execute porcedure bitacora3();
+    ''')
+
+    conn.commit()
+    conn.close()
+
+def trigger_usuario():
+    conn = psycopg2.connect(
+        host = host1,
+        database = database1,
+        user = user1,
+        password = password1,
+        port = port1
+
+    )
+
+    c = conn.cursor()
+
+    c.execute('''
+    create or replace function bitacora4()
+    return trigger as $$
+    declare 
+	    usuario varchar(20) := user;
+	    fecha date := current_date;
+	    tiempo time := current_time;
+    begin
+	    insert into 'log_admin' values (usuario, 'modificar usuario', fecha, tiempo)
+	    return new;
+    end;
+    $$
+    language plpgsql
+
+    create or replace trigger mod_usuario
+    before 
+    on usuario
+    for each row execute porcedure bitacora4();
+
+    create or replace function bitacora5()
+    return trigger as $$
+    declare 
+	    usuario varchar(20) := user;
+	    fecha date := current_date;
+	    tiempo time := current_time;
+    begin
+	    insert into 'log_admin' values (usuario, 'eliminar usuario', fecha, tiempo)
+	    return new;
+    end;
+    $$
+    language plpgsql
+
+    create or replace trigger del_usuario
+    before delete
+    on usuario
+    for each row execute porcedure bitacora5();
+
+    create or replace function bitacora6()
+    return trigger as $$
+    declare 
+	    usuario varchar(20) := user;
+	    fecha date := current_date;
+	    tiempo time := current_time;
+    begin
+	    insert into 'log_admin' values (usuario, 'crear usuario', fecha, tiempo)
+	    return new;
+    end;
+    $$
+    language plpgsql
+
+    create or replace trigger ins_usuario
+    after insert
+    on usuario
+    for each row execute porcedure bitacora6();
+    ''')
+
+    conn.commit()
+    conn.close()
+
+##def trigger_sesiones():
+##    conn = psycopg2.connect(
+##        host = host1,
+##        database = database1,
+##        user = user1,
+##        password = password1,
+##        port = port1
+##
+##    )
+##
+##    c = conn.cursor()
+##
+##    c.execute('''
+##    create or replace function bitacora7()
+##    return trigger as $$
+##    declare 
+##	    usuario varchar(20) := user;
+##	    fecha date := current_date;
+##	    tiempo time := current_time;
+##    begin
+##	    insert into 'log_admin' values (usuario, 'modificar sesion', fecha, tiempo)
+##	    return new;
+##    end;
+##    $$
+##    language plpgsql
+##
+##    create or replace trigger mod_sesiones
+##    before 
+##    on sesion
+##    for each row execute porcedure bitacora7();
+##
+##    create or replace function bitacora8()
+##    return trigger as $$
+##    declare 
+##	    usuario varchar(20) := user;
+##	    fecha date := current_date;
+##	    tiempo time := current_time;
+##    begin
+##	    insert into 'log_admin' values (usuario, 'eliminar sesion', fecha, tiempo)
+##	    return new;
+##    end;
+##    $$
+##    language plpgsql
+##
+##    create or replace trigger del_sesion
+##    before delete
+##    on sesion
+##    for each row execute porcedure bitacora8();
+##
+##    create or replace function bitacora6()
+##    return trigger as $$
+##    declare 
+##	    usuario varchar(20) := user;
+##	    fecha date := current_date;
+##	    tiempo time := current_time;
+##    begin
+##	    insert into 'log_admin' values (usuario, 'crear usuario', fecha, tiempo)
+##	    return new;
+##    end;
+##    $$
+##    language plpgsql
+##
+##    create or replace trigger ins_usuario
+##    after insert
+##    on usuario
+##    for each row execute porcedure bitacora6();
+##    ''')
+##
+##    conn.commit()
+##    conn.close()
+##
 ## PANTALLA SIGNUP
 
 def signup():
@@ -852,8 +1037,8 @@ def AdmInstructor():
     conn = psycopg2.connect(
             host = host1,
             database = database1,
-            user = user1,
-            password = password1,
+            user = user3,
+            password = password3,
             port = port1
 
         )
@@ -922,8 +1107,8 @@ def AdmInstructor():
         conn = psycopg2.connect(
             host = host1,
             database = database1,
-            user = user1,
-            password = password1,
+            user = user3,
+            password = password3,
             port = port1
 
         )
@@ -957,8 +1142,8 @@ def AdmInstructor():
             conn = psycopg2.connect(
             host = host1,
             database = database1,
-            user = user1,
-            password = password1,
+            user = user3,
+            password = password3,
             port = port1
 
             )
@@ -985,8 +1170,8 @@ def AdmInstructor():
         conn = psycopg2.connect(
             host = host1,
             database = database1,
-            user = user1,
-            password = password1,
+            user = user3,
+            password = password3,
             port = port1
 
         )
@@ -1016,8 +1201,8 @@ def AdmInstructor():
         conn = psycopg2.connect(
             host = host1,
             database = database1,
-            user = user1,
-            password = password1,
+            user = user3,
+            password = password3,
             port = port1
 
         )
@@ -1041,8 +1226,8 @@ def AdmInstructor():
         conn = psycopg2.connect(
             host = host1,
             database = database1,
-            user = user1,
-            password = password1,
+            user = user3,
+            password = password3,
             port = port1
 
         )
@@ -1494,8 +1679,8 @@ def AdmUsuario():
         conn = psycopg2.connect(
             host = host1,
             database = database1,
-            user = user1,
-            password = password1,
+            user = user2,
+            password = password2,
             port = port1
         )
 
@@ -1528,8 +1713,8 @@ def AdmUsuario():
             conn = psycopg2.connect(
             host = host1,
             database = database1,
-            user = user1,
-            password = password1,
+            user = user2,
+            password = password2,
             port = port1
 
             )
@@ -1562,8 +1747,8 @@ def AdmUsuario():
         conn = psycopg2.connect(
             host = host1,
             database = database1,
-            user = user1,
-            password = password1,
+            user = user2,
+            password = password2,
             port = port1
 
         )
@@ -1605,8 +1790,8 @@ def AdmUsuario():
         conn = psycopg2.connect(
             host = host1,
             database = database1,
-            user = user1,
-            password = password1,
+            user = user2,
+            password = password2,
             port = port1
 
         )
@@ -2710,9 +2895,10 @@ def reportes():
 
 #crearTablas()
 #insertAdm()
-#CreacionRoles()
 #CreacionGrupos()
 #crearPrivilegios()
+#CreacionRoles()
+
 Button(root, text='Login', command= login, font=("Helvetica", 24)).grid(row=0)
 Button(root, text='Registro', command=signup, font=("Helvetica", 24)).grid(row=1)
 Button(root, text='Admin', command=tiposAdmin, font=("Helvetica", 24)).grid(row=2)
