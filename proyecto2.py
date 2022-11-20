@@ -4,14 +4,15 @@ from tkinter import ttk
 from tkinter import messagebox
 from types import NoneType
 import psycopg2
+from psycopg2 import extensions
 from datetime import datetime, timedelta, date
 
 root = Tk()
 root.title('App SmartWatch')
 host1 = "localhost"
-database1 = "Proyecto3"
+database1 = "proyecto3"
 user1 = "postgres"
-password1 = "admin"
+password1 = "Belmar.2017"
 port1 = "5432"
 def crearTablas():
 
@@ -72,6 +73,18 @@ def crearTablas():
     (user_admin VARCHAR PRIMARY KEY,
     pass_admin VARCHAR);
 
+    CREATE TABLE IF NOT EXISTS adminu
+    (user_admin VARCHAR PRIMARY KEY,
+    pass_admin VARCHAR);
+
+    CREATE TABLE IF NOT EXISTS admins
+    (user_admin VARCHAR PRIMARY KEY,
+    pass_admin VARCHAR);
+
+    CREATE TABLE IF NOT EXISTS superadm
+    (user_admin VARCHAR PRIMARY KEY,
+    pass_admin VARCHAR);
+
     create table if not exists log_admin
     (fk_user_admin varchar references admin(user_admin),
     accion varchar,
@@ -95,10 +108,9 @@ def insertAdm():
     c = conn.cursor()
 
     c.execute('''
-    INSERT INTO admin VALUES('admin1', 'password123');
-    INSERT INTO admin VALUES('admin2', 'password123');
-    INSERT INTO admin VALUES('admin3', 'password123');
-    INSERT INTO admin VALUES('admin4', 'password123');
+    INSERT INTO adminu VALUES('usuarioU1', 'adminu1');
+    INSERT INTO admins VALUES('usuarioSe1', 'adminse1');
+    INSERT INTO superadm VALUES('superuser1', 'superadmin1');
     ''')
 
     conn.commit()
@@ -390,7 +402,15 @@ def validarLogin():
     conn.commit()
     conn.close()
 
-def adminLogin():
+def tiposAdmin():
+    padmin = Toplevel(root)
+    padmin.title("Funciones de administrador")
+    botoneditaradmin = Button(padmin, text='Administrador de usuarios', bg='sky blue', font=("Helvetica", 18), command=insertAdm).grid(row=1,pady=10,padx=10)
+    botonInstructores = Button(padmin, text='Administrador de sesiones', bg='sky blue', font=("Helvetica", 18), command=adminSesionesLogin).grid(row=2,pady=10,padx=10)
+    botonSesiones = Button(padmin, text='Superadministrador', bg='sky blue', font=("Helvetica", 18), command=SuperAdminLogin).grid(row=3,pady=10,padx=10)
+    
+
+def adminUsuariosLogin():
     global adminUser
     global adminpassLogin
     global loginNotif
@@ -414,23 +434,142 @@ def adminLogin():
     loginNotif = Label(padminLogin, font=("Helvetica", 18))
     loginNotif.grid(row= 2, column= 0, pady= 10, padx= 10)
 
-    submitLogin = Button(padminLogin, text= "Ingresar", font=("Helvetica", 18, "bold"), command = validarAdminLogin, width= 20)
+    submitLogin = Button(padminLogin, text= "Ingresar", font=("Helvetica", 18, "bold"), command = validarAdminULogin, width= 20)
     submitLogin.grid(row=2,column=1,pady=10,padx=10)
 
-def validarAdminLogin():
+def validarAdminULogin():
     try:
         conn = psycopg2.connect(
             host = host1,
             database = database1,
             user = user1,
             password = password1,
-            port = port1
+            port = port1)
+            
 
-        )
-
+        nivel_aislamiento = extensions.ISOLATION_LEVEL_SERIALIZABLE
+        conn.set_isolation_level(nivel_aislamiento)
         c = conn.cursor()
 
-        query = '''SELECT user_admin, pass_admin FROM admin WHERE user_admin = %s AND pass_admin = %s'''
+        query = '''SELECT user_admin, pass_admin FROM adminu WHERE user_admin = %s AND pass_admin = %s'''
+        c.execute(query, (adminUser.get(), adminpassLogin.get()))
+        global credencialesAdmin
+        credencialesAdmin = c.fetchone()
+
+        if credencialesAdmin[0] == adminUser.get() and credencialesAdmin[1] == adminpassLogin.get():
+            padminLogin.destroy()
+            padmin = Toplevel(root)
+            padmin.title("Funciones de administrador de usuarios")
+
+            
+            botonUsuarios = Button(padmin, text='Editar usuarios', bg='sky blue', font=("Helvetica", 18), command=AdmUsuario).grid(row=0,pady=10,padx=10)
+           
+
+
+    except (Exception, psycopg2.Error) as error:
+        loginNotif.config(fg="red", text= "Credenciales incorrectos")
+        print(error)
+
+def adminSesionesLogin():
+    global adminUser
+    global adminpassLogin
+    global loginNotif
+    global padminLogin
+
+    padminLogin = Toplevel(root)
+    padminLogin.title("Admin Login")
+
+    l_adminLogin = Label(padminLogin, text= "ID de usuario:")
+    l_adminLogin.grid(row= 0, column= 0, pady= 10, padx= 10)
+
+    adminUser = Entry(padminLogin, font=("Helvetica", 18))
+    adminUser.grid(row=0, column=1, pady=10, padx=10)
+
+    l_adminpassLogin = Label(padminLogin, text= "Contraseña:")
+    l_adminpassLogin.grid(row= 1, column= 0, pady= 10, padx= 10)
+
+    adminpassLogin = Entry(padminLogin, show = "*")
+    adminpassLogin.grid(row=1, column=1, pady=10, padx=10)
+
+    loginNotif = Label(padminLogin, font=("Helvetica", 18))
+    loginNotif.grid(row= 2, column= 0, pady= 10, padx= 10)
+
+    submitLogin = Button(padminLogin, text= "Ingresar", font=("Helvetica", 18, "bold"), command = validarAdminSeLogin, width= 20)
+    submitLogin.grid(row=2,column=1,pady=10,padx=10)
+
+def validarAdminSeLogin():
+    try:
+        conn = psycopg2.connect(
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1)
+            
+
+        nivel_aislamiento = extensions.ISOLATION_LEVEL_SERIALIZABLE
+        conn.set_isolation_level(nivel_aislamiento)
+        c = conn.cursor()
+
+        query = '''SELECT user_admin, pass_admin FROM admins WHERE user_admin = %s AND pass_admin = %s'''
+        c.execute(query, (adminUser.get(), adminpassLogin.get()))
+        global credencialesAdmin
+        credencialesAdmin = c.fetchone()
+
+        if credencialesAdmin[0] == adminUser.get() and credencialesAdmin[1] == adminpassLogin.get():
+            padminLogin.destroy()
+            padmin = Toplevel(root)
+            padmin.title("Funciones de administrador")
+
+            botonInstructores = Button(padmin, text='Editar instructores', bg='sky blue', font=("Helvetica", 18), command=AdmInstructor).grid(row=1,pady=10,padx=10)
+            botonSesiones = Button(padmin, text='Editar sesiones', bg='sky blue', font=("Helvetica", 18), command=AdmSesion).grid(row=2,pady=10,padx=10)
+           
+    except (Exception, psycopg2.Error) as error:
+        loginNotif.config(fg="red", text= "Credenciales incorrectos")
+        print(error)
+
+def SuperAdminLogin():
+    global adminUser
+    global adminpassLogin
+    global loginNotif
+    global padminLogin
+
+    padminLogin = Toplevel(root)
+    padminLogin.title("Admin Login")
+
+    l_adminLogin = Label(padminLogin, text= "ID de usuario:")
+    l_adminLogin.grid(row= 0, column= 0, pady= 10, padx= 10)
+
+    adminUser = Entry(padminLogin, font=("Helvetica", 18))
+    adminUser.grid(row=0, column=1, pady=10, padx=10)
+
+    l_adminpassLogin = Label(padminLogin, text= "Contraseña:")
+    l_adminpassLogin.grid(row= 1, column= 0, pady= 10, padx= 10)
+
+    adminpassLogin = Entry(padminLogin, show = "*")
+    adminpassLogin.grid(row=1, column=1, pady=10, padx=10)
+
+    loginNotif = Label(padminLogin, font=("Helvetica", 18))
+    loginNotif.grid(row= 2, column= 0, pady= 10, padx= 10)
+
+    submitLogin = Button(padminLogin, text= "Ingresar", font=("Helvetica", 18, "bold"), command = validarSuperadminLogin, width= 20)
+    submitLogin.grid(row=2,column=1,pady=10,padx=10)
+
+def validarSuperadminLogin():
+    try:
+        conn = psycopg2.connect(
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1)
+            
+
+        nivel_aislamiento = extensions.ISOLATION_LEVEL_SERIALIZABLE
+        conn.set_isolation_level(nivel_aislamiento)
+        c = conn.cursor()
+
+        query = '''SELECT user_admin, pass_admin FROM superadm WHERE user_admin = %s AND pass_admin = %s'''
         c.execute(query, (adminUser.get(), adminpassLogin.get()))
         global credencialesAdmin
         credencialesAdmin = c.fetchone()
@@ -441,17 +580,13 @@ def validarAdminLogin():
             padmin.title("Funciones de administrador")
 
             botoneditaradmin = Button(padmin, text='Editar administradores', bg='sky blue', font=("Helvetica", 18), command=Admadmins).grid(row=1,pady=10,padx=10)
-            botonInstructores = Button(padmin, text='Editar instructores', bg='sky blue', font=("Helvetica", 18), command=AdmInstructor).grid(row=2,pady=10,padx=10)
-            botonSesiones = Button(padmin, text='Editar sesiones', bg='sky blue', font=("Helvetica", 18), command=AdmSesion).grid(row=3,pady=10,padx=10)
-            botonUsuarios = Button(padmin, text='Editar usuarios', bg='sky blue', font=("Helvetica", 18), command=AdmUsuario).grid(row=4,pady=10,padx=10)
-            botonReportes = Button(padmin, text='Reportería', bg='sky blue', font=("Helvetica", 18), command=reportes).grid(row=5,pady=10,padx=10)
+            botonReportes = Button(padmin, text='Reportería', bg='sky blue', font=("Helvetica", 18), command=reportes).grid(row=2,pady=10,padx=10)
 
 
     except (Exception, psycopg2.Error) as error:
         loginNotif.config(fg="red", text= "Credenciales incorrectos")
         print(error)
-
-
+    
 def Admadmins():
     conn = psycopg2.connect(
             host = host1,
@@ -2439,6 +2574,6 @@ def reportes():
 #insertAdm()
 Button(root, text='Login', command= login, font=("Helvetica", 24)).grid(row=0)
 Button(root, text='Registro', command=signup, font=("Helvetica", 24)).grid(row=1)
-Button(root, text='Admin', command=adminLogin, font=("Helvetica", 24)).grid(row=2)
+Button(root, text='Admin', command=tiposAdmin, font=("Helvetica", 24)).grid(row=2)
 
 root.mainloop()
