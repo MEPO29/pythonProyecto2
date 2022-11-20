@@ -227,10 +227,6 @@ def CreacionRoles():
     conn.commit()
     conn.close()
 
-def crearTriggers():
-
-    print(1)
-
 def funcionReg():
     conn = psycopg2.connect(
         host = host1,
@@ -496,6 +492,10 @@ def trigger_usuario():
 ##    conn.commit()
 ##    conn.close()
 ##
+
+def crearTriggers():
+    trigger_usuario()
+    trigger_instructor()
 ## PANTALLA SIGNUP
 
 def signup():
@@ -2898,7 +2898,7 @@ def reportes():
 #CreacionGrupos()
 #crearPrivilegios()
 #CreacionRoles()
-
+crearTriggers()
 Button(root, text='Login', command= login, font=("Helvetica", 24)).grid(row=0)
 Button(root, text='Registro', command=signup, font=("Helvetica", 24)).grid(row=1)
 Button(root, text='Admin', command=tiposAdmin, font=("Helvetica", 24)).grid(row=2)
