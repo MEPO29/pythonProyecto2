@@ -116,6 +116,108 @@ def insertAdm():
     conn.commit()
     conn.close()
 
+def CreacionGrupos():
+    conn = psycopg2.connect(
+        host = host1,
+        database = database1,
+        user = user1,
+        password = password1,
+        port = port1
+
+    )
+
+    c = conn.cursor()
+
+    c.execute('''
+    --CREATE GROUP admin_usuarios
+    --CREATE GROUP admin_sesiones
+    --CREATE GROUP super_admin
+
+    ''')
+
+    conn.commit()
+    conn.close()
+
+def crearPrivilegios():
+    conn = psycopg2.connect(
+        host = host1,
+        database = database1,
+        user = user1,
+        password = password1,
+        port = port1
+
+    )
+
+    c = conn.cursor()
+
+    c.execute('''
+
+    --GRANT ALL PRIVILEGES ON table usuario, progreso, suscripcion TO admin_usuarios WITH GRANT OPTION 
+    --GRANT ALL PRIVILEGES ON table  sesion, registro_sesion, instructor TO admin_sesiones WITH GRANT OPTION 
+    --GRANT ALL PRIVILEGES ON table usuario, sesion ,suscripcion , registro_sesion , adminu, admins, superadm  , instructor, log_admin , progreso  TO super_admin with GRANT OPTION
+
+    ''')
+
+    conn.commit()
+    conn.close()
+
+def CreacionRoles():
+    conn = psycopg2.connect(
+        host = host1,
+        database = database1,
+        user = user1,
+        password = password1,
+        port = port1
+
+    )
+
+    c = conn.cursor()
+
+    c.execute('''
+
+    CREATE ROLE usuarioU1 WITH
+	    LOGIN
+	    NOSUPERUSER
+	    NOCREATEDB
+	    NOCREATEROLE
+	    INHERIT
+	    NOREPLICATION
+	    CONNECTION LIMIT -1
+	    PASSWORD 'adminu1';
+
+    GRANT admin_usuarios TO usuarioU1;
+
+    CREATE ROLE usuarioSe1 WITH
+	    LOGIN
+	    NOSUPERUSER
+	    NOCREATEDB
+	    NOCREATEROLE
+	    INHERIT
+	    NOREPLICATION
+	    CONNECTION LIMIT -1
+	    PASSWORD 'adminse1';
+
+    GRANT admin_sesiones TO usuarioSe1;
+
+
+    CREATE ROLE superuser1 WITH
+	    LOGIN
+	    SUPERUSER
+	    CREATEDB
+	    CREATEROLE
+	    INHERIT
+	    REPLICATION
+	    CONNECTION LIMIT -1
+	    PASSWORD 'superadmin1';
+
+    GRANT super_admin TO superuser1;
+
+
+    ''')
+
+    conn.commit()
+    conn.close()
+
 def crearTriggers():
 
     print(1)
@@ -405,7 +507,7 @@ def validarLogin():
 def tiposAdmin():
     padmin = Toplevel(root)
     padmin.title("Funciones de administrador")
-    botoneditaradmin = Button(padmin, text='Administrador de usuarios', bg='sky blue', font=("Helvetica", 18), command=insertAdm).grid(row=1,pady=10,padx=10)
+    botoneditaradmin = Button(padmin, text='Administrador de usuarios', bg='sky blue', font=("Helvetica", 18), command=adminUsuariosLogin()).grid(row=1,pady=10,padx=10)
     botonInstructores = Button(padmin, text='Administrador de sesiones', bg='sky blue', font=("Helvetica", 18), command=adminSesionesLogin).grid(row=2,pady=10,padx=10)
     botonSesiones = Button(padmin, text='Superadministrador', bg='sky blue', font=("Helvetica", 18), command=SuperAdminLogin).grid(row=3,pady=10,padx=10)
     
@@ -2572,6 +2674,9 @@ def reportes():
 
 #crearTablas()
 #insertAdm()
+#CreacionRoles()
+#CreacionGrupos()
+#crearPrivilegios()
 Button(root, text='Login', command= login, font=("Helvetica", 24)).grid(row=0)
 Button(root, text='Registro', command=signup, font=("Helvetica", 24)).grid(row=1)
 Button(root, text='Admin', command=tiposAdmin, font=("Helvetica", 24)).grid(row=2)
