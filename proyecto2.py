@@ -890,22 +890,22 @@ def Simulacion():
 
         prevListaInstructor = [item for t in c.fetchall() for item in t]
 
-    #     c = conn.cursor()
+        c = conn.cursor()
 
-    #     c.execute('''
-    #     SELECT id_usuario FROM usuario
-    #     LIMIT %s
-    #     ''', (cantUser,))
+        c.execute('''
+        SELECT id_usuario FROM usuario
+        LIMIT %s
+        ''', (cantUser,))
 
-    #     prevListaCat = ['Aerobicos', 'Zumba', 'Salsa', 'Pesas' , 'Cardio', 'Yoga', 'Fortalecimiento', 'Resistencia']
-    #     listaUsuario = [item for t in c.fetchall() for item in t]
-    #     print(listaUsuario)
-    #     listaInicio = []
-    #     listaFin = []
-    #     listaCat = []
-    #     listaInstructor = []
-    #     listaCal = []
-    #     listaRitmo = []
+        prevListaCat = ['Aerobicos', 'Zumba', 'Salsa', 'Pesas' , 'Cardio', 'Yoga', 'Fortalecimiento', 'Resistencia']
+        listaUsuario = [item for t in c.fetchall() for item in t]
+        print(listaUsuario)
+        listaInicio = []
+        listaFin = []
+        listaCat = []
+        listaInstructor = []
+        listaCal = []
+        listaRitmo = []
 
     #     for n in range(cantUser):
     #         print(1)
