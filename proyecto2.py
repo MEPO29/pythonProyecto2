@@ -977,15 +977,15 @@ def Simulacion():
         my_tree.tag_configure('oddrow', background="white")
         my_tree.tag_configure('evenrow', background="lightblue")
 
-    #     count = 0
+        count = 0
 
-    #     for record in data:
-    #         if count % 2 == 0:
-    #             my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1], record[2], record[3], record[4], record[5], record[6]), tags=('evenrow',))
-    #         else:
-    #             my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1], record[2], record[3], record[4], record[5], record[6]), tags=('oddrow',))
+        for record in data:
+            if count % 2 == 0:
+                my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1], record[2], record[3], record[4], record[5], record[6]), tags=('evenrow',))
+            else:
+                my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1], record[2], record[3], record[4], record[5], record[6]), tags=('oddrow',))
             
-    #         count += 1
+            count += 1
 
     pingresarSim = Toplevel(root)
     pingresarSim.title("Ingresar fecha y cantidad")
