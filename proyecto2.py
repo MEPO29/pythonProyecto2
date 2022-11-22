@@ -11,9 +11,9 @@ import random
 root = Tk()
 root.title('App SmartWatch')
 host1 = "localhost"
-database1 = "Py3"
+database1 = "Proyecto3"
 user1 = "postgres"
-password1 = "mepito"
+password1 = "admin"
 port1 = "5432"
 user2 = "usuariou1"
 password2 = "adminu1"
@@ -1083,13 +1083,13 @@ def Admadmins():
     conn.commit()
     conn.close()
 
-    def borrarAdmS(host1, database1, user4, password4, port1):
+    def borrarAdmS():
        
         conn = psycopg2.connect(
             host = host1,
             database = database1,
-            user = user4,
-            password = password4,
+            user = user1,
+            password = password1,
             port = port1
 
         )
@@ -1110,13 +1110,13 @@ def Admadmins():
         fn_entry.delete(0, END)
         ln_entry.delete(0, END)
 
-    def borrarAdmU(host1, database1, user4, password4, port1):
+    def borrarAdmU():
        
         conn = psycopg2.connect(
             host = host1,
             database = database1,
-            user = user4,
-            password = password4,
+            user = user1,
+            password = password1,
             port = port1
 
         )
@@ -1208,7 +1208,7 @@ def Admadmins():
     remove_one_button.grid(row=0, column=3, padx=10, pady=10)
 
     remove_one_button = Button(button_frame, text="Eliminar administrador de usuarios", command=borrarAdmU)
-    remove_one_button.grid(row=0, column=5, padx=10, pady=10)
+    remove_one_button.grid(row=0, column=4, padx=10, pady=10)
 
     remove_one_button = Button(button_frame, text="Eliminar administrador de sesiones", command=borrarAdmS)
     remove_one_button.grid(row=0, column=5, padx=10, pady=10)
