@@ -244,25 +244,25 @@ def crearVista():
     c = conn.cursor()
 
     c.execute('''
-    --Create  view consulta1 as
-    --SELECT  extract (day from fecha_hora_inicio) as dia, count(id_sesion) as conteo FROM sesion 
-	--WHERE extract(hour from fecha_hora_inicio) between 15 and 20 
-    --GROUP BY dia 
+    --Create  view ReporteF1 as
+    --SELECT  id_sesion, fecha_hora_inicio, count(id_sesion) as conteo FROM sesion 
+    --WHERE extract(hour from fecha_hora_inicio) between 9 and 18 
+    --GROUP BY id_sesion
     --ORDER BY conteo desc
     --LIMIT 5 ;
 
-    --Create view consulta2 as
-    --SELECT  fk_nombre_instructor, count(fk_nombre_instructor)as cuenta 
+    --Create view reporteF2 as
+    --SELECT   fk_nombre_instructor, count(fk_nombre_instructor)as cuenta 
     --FROM sesion
-    --where extract ( month from fecha_hora_inicio) = 10
-    --GROUP BY fk_nombre_instructor
+    --where extract(month  from fecha_hora_inicio) between 5 and 10
+    --GROUP BY fk_nombre_instructor 
     --ORDER BY cuenta desc
     --LIMIT 10 ;
 
-    Create view consulta3 as
-    select usuario, count(usuario) as cantidad_usuario  
-    from log_admin 
-    group by usuario
+    --Create view reportef3 as
+    --select usuario, count(usuario) as cantidad_usuario  
+    --from log_admin 
+    --group by usuario
 
 
 
@@ -3377,7 +3377,7 @@ def reportes():
 crearTablas()
 #insertAdm()
 #CreacionGrupos()
-crearPrivilegios()
+#crearPrivilegios()
 #CreacionRoles()
 crearTriggers()
 #crearVista()
