@@ -871,24 +871,24 @@ def validarAdminSeLogin():
 
 def Simulacion():
 
-    # def ejecutarSim():
-    #     fecha = datetime.strptime(simFecha.get(), '%Y-%m-%d')
-    #     cantUser = int(simUser.get())
+    def ejecutarSim():
+        fecha = datetime.strptime(simFecha.get(), '%Y-%m-%d')
+        cantUser = int(simUser.get())
 
-    #     conn = psycopg2.connect(
-    #         host = host1,
-    #         database = database1,
-    #         user = user1,
-    #         password = password1,
-    #         port = port1)
+        conn = psycopg2.connect(
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1)
 
-    #     c = conn.cursor()
+        c = conn.cursor()
 
-    #     c.execute('''
-    #     SELECT nombre_instructor FROM instructor
-    #     ''')
+        c.execute('''
+        SELECT nombre_instructor FROM instructor
+        ''')
 
-    #     prevListaInstructor = [item for t in c.fetchall() for item in t]
+        prevListaInstructor = [item for t in c.fetchall() for item in t]
 
     #     c = conn.cursor()
 
