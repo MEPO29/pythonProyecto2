@@ -11,7 +11,7 @@ import random
 root = Tk()
 root.title('App SmartWatch')
 host1 = "localhost"
-database1 = "Proyecto3"
+database1 = "proyecto3.1"
 user1 = "postgres"
 password1 = "admin"
 port1 = "5432"
@@ -245,25 +245,25 @@ def crearVista():
     c = conn.cursor()
 
     c.execute('''
-    --Create  view ReporteF1 as
-    --SELECT  id_sesion, fecha_hora_inicio, count(id_sesion) as conteo FROM sesion 
-    --WHERE extract(hour from fecha_hora_inicio) between 9 and 18 
-    --GROUP BY id_sesion
-    --ORDER BY conteo desc
-    --LIMIT 5 ;
+    Create  view ReporteF1 as
+    SELECT  id_sesion, fecha_hora_inicio, count(id_sesion) as conteo FROM sesion 
+    WHERE extract(hour from fecha_hora_inicio) between 9 and 18 
+    GROUP BY id_sesion
+    ORDER BY conteo desc
+    LIMIT 5;
 
-    --Create view reporteF2 as
-    --SELECT   fk_nombre_instructor, count(fk_nombre_instructor)as cuenta 
-    --FROM sesion
-    --where extract(month  from fecha_hora_inicio) between 5 and 10
-    --GROUP BY fk_nombre_instructor 
-    --ORDER BY cuenta desc
-    --LIMIT 10 ;
+    Create view reporteF2 as
+    SELECT   fk_nombre_instructor, count(fk_nombre_instructor)as cuenta 
+    FROM sesion
+    where extract(month  from fecha_hora_inicio) between 5 and 10
+    GROUP BY fk_nombre_instructor 
+    ORDER BY cuenta desc
+    LIMIT 10 ;
 
-    --Create view reportef3 as
-    --select usuario, count(usuario) as cantidad_usuario  
-    --from log_admin 
-    --group by usuario
+    Create view reportef3 as
+    select usuario, count(usuario) as cantidad_usuario  
+    from log_admin 
+    group by usuario
 
 
 
