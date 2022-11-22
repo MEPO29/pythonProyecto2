@@ -928,31 +928,31 @@ def Simulacion():
         data = list(zip(listaUsuario,listaInicio,listaFin,listaCat,listaInstructor,listaCal,listaRitmo))
         print(data)
 
-    #     pSim = Toplevel(root)
-    #     pSim.title("Simulador de actividad")
-    #     pSim.geometry("1000x300")
+        pSim = Toplevel(root)
+        pSim.title("Simulador de actividad")
+        pSim.geometry("1000x300")
 
-    #     style = ttk.Style()
-    #     style.theme_use('default')
-    #     style.configure("Treeview",
-    #         background="#D3D3D3",
-    #         foreground="black",
-    #         rowheight=25,
-    #         fieldbackground="#D3D3D3")
+        style = ttk.Style()
+        style.theme_use('default')
+        style.configure("Treeview",
+            background="#D3D3D3",
+            foreground="black",
+            rowheight=25,
+            fieldbackground="#D3D3D3")
 
-    #     style.map('Treeview',
-    #         background=[('selected', "#347083")])
+        style.map('Treeview',
+            background=[('selected', "#347083")])
         
-    #     tree_frame = Frame(pSim)
-    #     tree_frame.pack(pady=10)
+        tree_frame = Frame(pSim)
+        tree_frame.pack(pady=10)
 
-    #     tree_scroll = Scrollbar(tree_frame)
-    #     tree_scroll.pack(side=RIGHT, fill=Y)
+        tree_scroll = Scrollbar(tree_frame)
+        tree_scroll.pack(side=RIGHT, fill=Y)
 
-    #     my_tree = ttk.Treeview(tree_frame, yscrollcommand=tree_scroll.set, selectmode="extended")
-    #     my_tree.pack()
+        my_tree = ttk.Treeview(tree_frame, yscrollcommand=tree_scroll.set, selectmode="extended")
+        my_tree.pack()
 
-    #     tree_scroll.config(command=my_tree.yview)
+        tree_scroll.config(command=my_tree.yview)
 
     #     my_tree['columns'] = ("Usuario", "Inicio", "Fin", "Categoria", "Instructor", "Calorias quemadas", "Ritmo promedio")
 
