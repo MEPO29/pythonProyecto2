@@ -165,9 +165,9 @@ def crearPrivilegios():
     --GRANT INSERT ON log_admin to admin_sesiones;
     --GRANT ALL PRIVILEGES ON table usuario, sesion ,suscripcion , registro_sesion , adminu, admins, superadm  , instructor, log_admin , progreso  TO super_admin with GRANT OPTION;
     --GRANT create on schema public to super_admin;
-    --Alter table if exists consulta1 owner to super_admin;
-    --Alter table if exists consulta2 owner to super_admin;
-    --Alter table if exists consulta3 owner to super_admin;
+    Alter table if exists reportef1 owner to super_admin;
+    Alter table if exists reportef2 owner to super_admin;
+    Alter table if exists reportef3 owner to super_admin;
     ''')
 
     conn.commit()
@@ -2924,6 +2924,75 @@ def top5_entrenadores():
     conn.close()
 
 
+def top5_entrenadores():
+    conn = psycopg2.connect(
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
+        )
+
+    c = conn.cursor()
+
+    c.execute('''SELECT fk_nombre_instructor, count(fk_nombre_instructor)as cuenta 
+    FROM sesion
+    GROUP BY fk_nombre_instructor
+    ORDER BY cuenta desc
+    LIMIT 5''')
+    data = c.fetchall()
+
+    pInstructor = Toplevel(root)
+    pInstructor.title("Administrador de instructores")
+
+    style = ttk.Style()
+    style.theme_use('default')
+    style.configure("Treeview",
+        background="#D3D3D3",
+        foreground="black",
+        rowheight=25,
+        fieldbackground="#D3D3D3")
+
+    style.map('Treeview',
+        background=[('selected', "#347083")])
+    
+    tree_frame = Frame(pInstructor)
+    tree_frame.pack(pady=10)
+
+    tree_scroll = Scrollbar(tree_frame)
+    tree_scroll.pack(side=RIGHT, fill=Y)
+
+    my_tree = ttk.Treeview(tree_frame, yscrollcommand=tree_scroll.set, selectmode="extended")
+    my_tree.pack()
+
+    tree_scroll.config(command=my_tree.yview)
+
+    my_tree['columns'] = ("Nombre de instructor", "Cantidad")
+
+    my_tree.column("#0", width=0, stretch=NO)
+    my_tree.column("Nombre de instructor", anchor=W, width=140)
+    my_tree.column("Cantidad", anchor=W, width=140)
+
+    my_tree.heading("#0", text="", anchor=W)
+    my_tree.heading("Nombre de instructor", text="Nombre de instructor", anchor=W)
+    my_tree.heading("Cantidad", text="Cantidad", anchor=W)
+
+    my_tree.tag_configure('oddrow', background="white")
+    my_tree.tag_configure('evenrow', background="lightblue")
+
+    global count
+    count = 0
+
+    for record in data:
+        if count % 2 == 0:
+            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1]), tags=('evenrow',))
+        else:
+            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1]), tags=('oddrow',))
+        
+        count += 1
+    conn.commit()
+    conn.close()
+    
 def cuen_diamante():
     conn = psycopg2.connect(
             host = host1,
@@ -2995,6 +3064,282 @@ def cuen_diamante():
     conn.commit()
     conn.close()
 
+def topSesiones():
+    pSesiones = Toplevel(root)
+    pSesiones.title("Top 5 sesiones entre las 9 am y 6 pm")
+
+    style = ttk.Style()
+    style.theme_use('default')
+    style.configure("Treeview",
+        background="#D3D3D3",
+        foreground="black",
+        rowheight=25,
+        fieldbackground="#D3D3D3")
+
+    style.map('Treeview',
+        background=[('selected', "#347083")])
+    
+    tree_frame = Frame(pSesiones)
+    tree_frame.pack(pady=10)
+
+    tree_scroll = Scrollbar(tree_frame)
+    tree_scroll.pack(side=RIGHT, fill=Y)
+
+    my_tree = ttk.Treeview(tree_frame, yscrollcommand=tree_scroll.set, selectmode="extended")
+    my_tree.pack()
+
+    tree_scroll.config(command=my_tree.yview)
+
+    my_tree['columns'] = ("Sesiones", "Fecha", "Cantidad de sesiones")
+
+    my_tree.column("#0", width=0, stretch=NO)
+    my_tree.column("Sesiones", anchor=W, width=140)
+    my_tree.column("Fecha", anchor=W, width=140)
+    my_tree.column("Cantidad de sesiones", anchor=W, width=140)
+    
+
+    my_tree.heading("#0", text="", anchor=W)
+    my_tree.heading("Sesiones", text="Sesiones", anchor=W)
+    my_tree.heading("Fecha", text="Fecha", anchor=W)
+    my_tree.heading("Cantidad de sesiones", text="Cantidad de sesiones", anchor=W)
+
+    my_tree.tag_configure('oddrow', background="white")
+    my_tree.tag_configure('evenrow', background="lightblue")
+    my_tree.tag_configure('oddrow', background="white")
+    conn = psycopg2.connect(
+        host = host1,
+        database = database1,
+        user = user1,
+        password = password1,
+        port = port1
+
+    )
+
+    c = conn.cursor()
+
+    c.execute('''
+     select * from ReporteF1
+    ''')
+    records = c.fetchall()
+    
+    global count
+    count = 0
+    
+    for record in records:
+        if count % 2 == 0:
+            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1], record[2]), tags=('evenrow',))
+        else:
+            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1], record[2]), tags=('oddrow',))
+        
+        count += 1
+    conn.commit()
+    conn.close()
+
+def top5_entrenadores():
+    conn = psycopg2.connect(
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
+        )
+
+    c = conn.cursor()
+
+    c.execute('''SELECT fk_nombre_instructor, count(fk_nombre_instructor)as cuenta 
+    FROM sesion
+    GROUP BY fk_nombre_instructor
+    ORDER BY cuenta desc
+    LIMIT 5''')
+    data = c.fetchall()
+
+    pInstructor = Toplevel(root)
+    pInstructor.title("Administrador de instructores")
+
+    style = ttk.Style()
+    style.theme_use('default')
+    style.configure("Treeview",
+        background="#D3D3D3",
+        foreground="black",
+        rowheight=25,
+        fieldbackground="#D3D3D3")
+
+    style.map('Treeview',
+        background=[('selected', "#347083")])
+    
+    tree_frame = Frame(pInstructor)
+    tree_frame.pack(pady=10)
+
+    tree_scroll = Scrollbar(tree_frame)
+    tree_scroll.pack(side=RIGHT, fill=Y)
+
+    my_tree = ttk.Treeview(tree_frame, yscrollcommand=tree_scroll.set, selectmode="extended")
+    my_tree.pack()
+
+    tree_scroll.config(command=my_tree.yview)
+
+    my_tree['columns'] = ("Nombre de instructor", "Cantidad")
+
+    my_tree.column("#0", width=0, stretch=NO)
+    my_tree.column("Nombre de instructor", anchor=W, width=140)
+    my_tree.column("Cantidad", anchor=W, width=140)
+
+    my_tree.heading("#0", text="", anchor=W)
+    my_tree.heading("Nombre de instructor", text="Nombre de instructor", anchor=W)
+    my_tree.heading("Cantidad", text="Cantidad", anchor=W)
+
+    my_tree.tag_configure('oddrow', background="white")
+    my_tree.tag_configure('evenrow', background="lightblue")
+
+    global count
+    count = 0
+
+    for record in data:
+        if count % 2 == 0:
+            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1]), tags=('evenrow',))
+        else:
+            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1]), tags=('oddrow',))
+        
+        count += 1
+    conn.commit()
+    conn.close()
+    
+def top10ins():
+    conn = psycopg2.connect(
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
+        )
+
+    c = conn.cursor()
+
+    c.execute('''
+    select * from ReporteF2
+    ''')
+    data = c.fetchall()
+
+    pInstructor = Toplevel(root)
+    pInstructor.title("Administrador de instructores")
+
+    style = ttk.Style()
+    style.theme_use('default')
+    style.configure("Treeview",
+        background="#D3D3D3",
+        foreground="black",
+        rowheight=25,
+        fieldbackground="#D3D3D3")
+
+    style.map('Treeview',
+        background=[('selected', "#347083")])
+    
+    tree_frame = Frame(pInstructor)
+    tree_frame.pack(pady=10)
+
+    tree_scroll = Scrollbar(tree_frame)
+    tree_scroll.pack(side=RIGHT, fill=Y)
+
+    my_tree = ttk.Treeview(tree_frame, yscrollcommand=tree_scroll.set, selectmode="extended")
+    my_tree.pack()
+
+    tree_scroll.config(command=my_tree.yview)
+
+    my_tree['columns'] = ("Nombre de instructor", "Cantidad")
+
+    my_tree.column("#0", width=0, stretch=NO)
+    my_tree.column("Nombre de instructor", anchor=W, width=140)
+    my_tree.column("Cantidad", anchor=W, width=140)
+
+    my_tree.heading("#0", text="", anchor=W)
+    my_tree.heading("Nombre de instructor", text="Nombre de instructor", anchor=W)
+    my_tree.heading("Cantidad", text="Cantidad", anchor=W)
+
+    my_tree.tag_configure('oddrow', background="white")
+    my_tree.tag_configure('evenrow', background="lightblue")
+
+    global count
+    count = 0
+
+    for record in data:
+        if count % 2 == 0:
+            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1]), tags=('evenrow',))
+        else:
+            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1]), tags=('oddrow',))
+        
+        count += 1
+    conn.commit()
+    conn.close()
+
+def top5adms():
+    conn = psycopg2.connect(
+            host = host1,
+            database = database1,
+            user = user1,
+            password = password1,
+            port = port1
+        )
+
+    c = conn.cursor()
+
+    c.execute('''
+    select * from ReporteF3
+    ''')
+    data = c.fetchall()
+
+    pInstructor = Toplevel(root)
+    pInstructor.title("Administrador de instructores")
+
+    style = ttk.Style()
+    style.theme_use('default')
+    style.configure("Treeview",
+        background="#D3D3D3",
+        foreground="black",
+        rowheight=25,
+        fieldbackground="#D3D3D3")
+
+    style.map('Treeview',
+        background=[('selected', "#347083")])
+    
+    tree_frame = Frame(pInstructor)
+    tree_frame.pack(pady=10)
+
+    tree_scroll = Scrollbar(tree_frame)
+    tree_scroll.pack(side=RIGHT, fill=Y)
+
+    my_tree = ttk.Treeview(tree_frame, yscrollcommand=tree_scroll.set, selectmode="extended")
+    my_tree.pack()
+
+    tree_scroll.config(command=my_tree.yview)
+
+    my_tree['columns'] = ("Usuario", "Modificaciones")
+
+    my_tree.column("#0", width=0, stretch=NO)
+    my_tree.column("Usuario", anchor=W, width=140)
+    my_tree.column("Modificaciones", anchor=W, width=140)
+
+    my_tree.heading("#0", text="", anchor=W)
+    my_tree.heading("Usuario", text="Usuario", anchor=W)
+    my_tree.heading("Modificaciones", text="Modificaciones", anchor=W)
+
+    my_tree.tag_configure('oddrow', background="white")
+    my_tree.tag_configure('evenrow', background="lightblue")
+
+    global count
+    count = 0
+
+    for record in data:
+        if count % 2 == 0:
+            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1]), tags=('evenrow',))
+        else:
+            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1]), tags=('oddrow',))
+        
+        count += 1
+    conn.commit()
+    conn.close()
+
+
+
 def reportes():
     pReportes = Toplevel(root)
     headers = Label(pReportes, font=("Helvetica", 18))
@@ -3012,8 +3357,18 @@ def reportes():
     top5_button = Button(pReportes, text = "El top 5 entrenadores",font=("Helvetica", 18), command=top5_entrenadores)
     top5_button.pack(padx = 20)
 
-    cuentas_diamante_button = Button(pReportes, text = "La cantidad de cuentas diamante",font=("Helvetica", 18), command=cuen_diamante)
+    cuentas_diamante_button = Button(pReportes, text = "La cantidad de cuentas diamante",font=("Helvetica", 18), command= cuen_diamante)
     cuentas_diamante_button.pack(padx = 20)
+
+
+    consulta1_button = Button(pReportes, text = "top 5 sesiones para un dia dado",font=("Helvetica", 18), command=topSesiones)
+    consulta1_button.pack(padx = 20)
+
+    bitacora_button = Button(pReportes, text = "top 10 instructores más buscados",font=("Helvetica", 18), command=top10ins)
+    bitacora_button.pack(padx = 20)
+
+    bitacora_button = Button(pReportes, text = "top 5 admins que más han modificado",font=("Helvetica", 18), command=top5adms)
+    bitacora_button.pack(padx = 20)
 
     bitacora_button = Button(pReportes, text = "Bitacora",font=("Helvetica", 18), command=bitacora)
     bitacora_button.pack(padx = 20)
@@ -3022,7 +3377,7 @@ def reportes():
 crearTablas()
 #insertAdm()
 #CreacionGrupos()
-#crearPrivilegios()
+crearPrivilegios()
 #CreacionRoles()
 crearTriggers()
 #crearVista()
