@@ -925,8 +925,8 @@ def Simulacion():
             listaCal.append(cal)
             listaRitmo.append(ritmo)
         
-    #     data = list(zip(listaUsuario,listaInicio,listaFin,listaCat,listaInstructor,listaCal,listaRitmo))
-    #     print(data)
+        data = list(zip(listaUsuario,listaInicio,listaFin,listaCat,listaInstructor,listaCal,listaRitmo))
+        print(data)
 
     #     pSim = Toplevel(root)
     #     pSim.title("Simulador de actividad")
