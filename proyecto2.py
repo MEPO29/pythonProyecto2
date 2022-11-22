@@ -918,8 +918,11 @@ def validarSuperadminLogin():
             padmin = Toplevel(root)
             padmin.title("Funciones de administrador")
 
-            botoneditaradmin = Button(padmin, text='Editar administradores', bg='sky blue', font=("Helvetica", 18), command=Admadmins).grid(row=1,pady=10,padx=10)
-            botonReportes = Button(padmin, text='Reportería', bg='sky blue', font=("Helvetica", 18), command=reportes).grid(row=2,pady=10,padx=10)
+            botonUsuarios = Button(padmin, text='Editar usuarios', bg='sky blue', font=("Helvetica", 18), command=AdmUsuario).grid(row=0,pady=10,padx=10)
+            botonInstructores = Button(padmin, text='Editar instructores', bg='sky blue', font=("Helvetica", 18), command=AdmInstructor).grid(row=1,pady=10,padx=10)
+            botonSesiones = Button(padmin, text='Editar sesiones', bg='sky blue', font=("Helvetica", 18), command=AdmSesion).grid(row=2,pady=10,padx=10)
+            botoneditaradmin = Button(padmin, text='Editar administradores', bg='sky blue', font=("Helvetica", 18), command=Admadmins).grid(row=4,pady=10,padx=10)
+            botonReportes = Button(padmin, text='Reportería', bg='sky blue', font=("Helvetica", 18), command=reportes).grid(row=5,pady=10,padx=10)
 
 
     except (Exception, psycopg2.Error) as error:
@@ -3022,7 +3025,7 @@ crearTablas()
 #crearPrivilegios()
 #CreacionRoles()
 crearTriggers()
-crearVista()
+#crearVista()
 Button(root, text='Login', command= login, font=("Helvetica", 24)).grid(row=0)
 Button(root, text='Registro', command=signup, font=("Helvetica", 24)).grid(row=1)
 Button(root, text='Admin', command=tiposAdmin, font=("Helvetica", 24)).grid(row=2)
