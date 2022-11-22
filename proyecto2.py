@@ -907,23 +907,23 @@ def Simulacion():
         listaCal = []
         listaRitmo = []
 
-    #     for n in range(cantUser):
-    #         print(1)
-    #         inicio = fecha.replace(hour=random.randint(6,22), minute=random.randint(0,59))
-    #         inicioString = inicio.strftime('%Y-%m-%d %H:%M:%S')
-    #         fin = inicio + timedelta(minutes=random.randint(30,60))
-    #         finString = fin.strftime('%Y-%m-%d %H:%M:%S')
-    #         cat = random.choice(prevListaCat)
-    #         inst = random.choice(prevListaInstructor)
-    #         cal = random.randint(150,300)
-    #         ritmo = random.randint(110,180)
+        for n in range(cantUser):
+            print(1)
+            inicio = fecha.replace(hour=random.randint(6,22), minute=random.randint(0,59))
+            inicioString = inicio.strftime('%Y-%m-%d %H:%M:%S')
+            fin = inicio + timedelta(minutes=random.randint(30,60))
+            finString = fin.strftime('%Y-%m-%d %H:%M:%S')
+            cat = random.choice(prevListaCat)
+            inst = random.choice(prevListaInstructor)
+            cal = random.randint(150,300)
+            ritmo = random.randint(110,180)
 
-    #         listaInicio.append(inicioString)
-    #         listaFin.append(finString)
-    #         listaCat.append(cat)
-    #         listaInstructor.append(inst)
-    #         listaCal.append(cal)
-    #         listaRitmo.append(ritmo)
+            listaInicio.append(inicioString)
+            listaFin.append(finString)
+            listaCat.append(cat)
+            listaInstructor.append(inst)
+            listaCal.append(cal)
+            listaRitmo.append(ritmo)
         
     #     data = list(zip(listaUsuario,listaInicio,listaFin,listaCat,listaInstructor,listaCal,listaRitmo))
     #     print(data)
