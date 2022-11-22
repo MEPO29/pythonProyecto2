@@ -2700,7 +2700,7 @@ def bitacora():
 
     c = conn.cursor()
 
-    c.execute(''' select usuario, accion, to_char(tiempo, 'HH24:MI') as hora, to_char(fecha, 'DD-HH-YYYY') as fecha 
+    c.execute(''' select usuario, accion, to_char(tiempo, 'HH24:MI:SS') as hora, to_char(fecha, 'DD-HH-YYYY') as fecha 
     from log_admin 
     ''')
     records = c.fetchall()
@@ -2712,9 +2712,9 @@ def bitacora():
     
     for record in records:
         if count % 2 == 0:
-            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1]), tags=('evenrow',))
+            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1], record[2], record[3]), tags=('evenrow',))
         else:
-            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1]), tags=('oddrow',))
+            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1], record[2], record[3]), tags=('oddrow',))
         
         count += 1
     conn.commit()
