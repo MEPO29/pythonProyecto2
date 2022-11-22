@@ -997,7 +997,7 @@ def Simulacion():
     simFecha.grid(row=0, column=1, pady=10, padx=10)
     simUser = Entry(pingresarSim, font=("Helvetica", 18))
     simUser.grid(row=1, column=1, pady=10, padx=10)
-    #botonSubmit = Button(pingresarSim, text='Simular', bg='sky blue', font=("Helvetica", 18), command=ejecutarSim).grid(row=2, column=1, pady=10, padx=10)
+    botonSubmit = Button(pingresarSim, text='Simular', bg='sky blue', font=("Helvetica", 18), command=ejecutarSim).grid(row=2, column=1, pady=10, padx=10)
 
 def SuperAdminLogin():
     global adminUser
