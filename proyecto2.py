@@ -305,7 +305,7 @@ def trigger_instructor():
     $$
     language plpgsql;
 
-    create trigger mod_instructores
+    create or replace trigger mod_instructores
     before update
     on instructor
     for each row execute procedure bitacora1();
@@ -323,7 +323,7 @@ def trigger_instructor():
     $$
     language plpgsql;
 
-    create trigger del_instructores
+    create or replace trigger del_instructores
     before delete
     on instructor
     for each row execute procedure bitacora2();
@@ -341,7 +341,7 @@ def trigger_instructor():
     $$
     language plpgsql;
 
-    create trigger ins_instructores
+    create or replace trigger ins_instructores
     after insert
     on instructor
     for each row execute procedure bitacora3();
@@ -394,7 +394,7 @@ def trigger_usuario():
     $$
     language plpgsql;
 
-    create trigger del_usuario
+    create or replace trigger del_usuario
     before delete
     on usuario
     for each row execute procedure bitacora5();
@@ -412,7 +412,7 @@ def trigger_usuario():
     $$
     language plpgsql;
 
-    create trigger ins_usuario
+    create or replace trigger ins_usuario
     after insert
     on usuario
     for each row execute procedure bitacora6();
@@ -447,7 +447,7 @@ def trigger_sesiones():
     $$
     language plpgsql;
 
-    create trigger mod_sesiones
+    create or replace trigger mod_sesiones
     before update
     on sesion
     for each row execute procedure bitacora7();
@@ -465,7 +465,7 @@ def trigger_sesiones():
     $$
     language plpgsql;
 
-    create trigger del_sesion
+    create or replace trigger del_sesion
     before delete
     on sesion
     for each row execute procedure bitacora8();
@@ -483,7 +483,7 @@ def trigger_sesiones():
     $$
     language plpgsql;
 
-    create trigger ins_sesion
+    create or replace trigger ins_sesion
     after insert
     on sesion
     for each row execute procedure bitacora9();
@@ -2700,8 +2700,8 @@ def bitacora():
 
     c = conn.cursor()
 
-    c.execute('''SELECT * 
-    FROM log_admin 
+    c.execute(''' select usuario, accion, to_char(tiempo, 'HH24:MI') as hora, to_char(fecha, 'DD-HH-YYYY') as fecha 
+    from log_admin 
     ''')
     records = c.fetchall()
 
@@ -2975,7 +2975,7 @@ crearTablas()
 #CreacionGrupos()
 #crearPrivilegios()
 #CreacionRoles()
-#crearTriggers()
+crearTriggers()
 Button(root, text='Login', command= login, font=("Helvetica", 24)).grid(row=0)
 Button(root, text='Registro', command=signup, font=("Helvetica", 24)).grid(row=1)
 Button(root, text='Admin', command=tiposAdmin, font=("Helvetica", 24)).grid(row=2)
