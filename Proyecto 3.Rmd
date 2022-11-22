@@ -1,0 +1,120 @@
+---
+title: "Proyecto 3"
+author: "Diana Díaz 21066, Mario Puente 21290, Aarón Beltrán 21092"
+date: "11/21/2022"
+output:
+  html_document: default
+  word_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r, echo=FALSE}
+postgres_user = 'postgres'
+postgres_pass = 'admin'
+postgres_db = 'Proyecto3'
+
+#librerias
+library(DBI)
+library(glue)
+library(RPostgres)
+library(dplyr)
+library(ggplot2)
+library(ggthemes)
+
+```
+
+```{r, echo=FALSE}
+conexion <- dbConnect(
+  drv = Postgres(),
+  host = 'localhost', 
+  port = 5432,
+  user = postgres_user,
+  password = postgres_pass,
+  dbname = postgres_db)
+```
+
+### Cantidad de cambios que hace un administrador
+Esto puede servir para saber que adminsitradores hacen más modificaciones ya sea
+a instructores, usuarios o sesiones.
+
+```{r pressure, echo=FALSE}
+tab_log_admin <- dbGetQuery(conexion, "select usuario, count(usuario) as cantidad_usuario  from log_admin 
+                    group by usuario")
+
+gg1 <- ggplot(tab_log_admin, aes(x = usuario, y = as.integer(cantidad_usuario), fill = usuario)) + geom_bar(stat= 'identity')+
+  labs(title="Cantidad de veces que un admin hace cambios", y="Cantidad de cambios por usuario", x="Usuario")
+
+gg1  
+```
+
+
+### Cantida de sesiones que tiene un instructor
+Este análisis sirve para saber cuantas sesiones tiene a su cargo cada instructor.
+
+```{r, echo = FALSE}
+can_ses_inst <- dbGetQuery(conexion, "select fk_nombre_instructor as instructor, count(fk_nombre_instructor) as sesiones
+                           from sesion
+                           group by instructor")
+gg2 <- ggplot(can_ses_inst, aes(x = instructor, y = as.integer(sesiones), fill = instructor)) +
+  geom_bar(stat = 'identity')+ labs(title = 'cantidad de sesiones por instructor',
+                                   y = 'Cantidad de sesiones', x = 'Instructor')
+gg2
+
+```
+
+
+### La máxima cantidad de peso que han perdido los usuarios
+Esto sirve para llevar un control sobre que usuarios han perdido más peso desde
+que comenzaron con su suscripción al IHealth. Estos datos pueden ser útiles a la 
+hora de realizar algún challenge.
+
+```{r, echo = FALSE}
+var_peso_usuario <- dbGetQuery(conexion, 'select fk_id_usuario as usuario, min(diferencia_sem) as peso
+                               from progreso
+                               group by usuario')
+gg3 <- ggplot(var_peso_usuario, aes(x = usuario, y = as.integer(peso), fill = usuario)) + 
+  geom_bar(stat = 'identity') + labs(title = 'La mayor cantidad de peso perdido por usuario',
+                                     x = 'Usuario', y = 'Peso perdido')
+gg3
+```
+
+
+### La cantidad de sesiones por hora.
+Esto puede servir para anlizar a que hora hay más sesiones. Así como también, si
+hay alguna hora que necesite más sesiones. 
+
+```{r,echo = FALSE}
+ses_hora <- dbGetQuery(conexion, 'select extract (hour from fecha_hora_inicio) as hora,
+                       count(fecha_hora_inicio) as hora1
+                       from sesion
+                       group by hora
+                       order by hora asc')
+gg4 <- ggplot(ses_hora, aes(x = hora, y = as.integer(hora1), fill = hora)) +
+  geom_bar(stat= 'identity') + labs(title = 'Sesiones por hora', x = 'Hora',
+                                    y = 'Cantidad de sesiones')
+gg4
+```
+
+
+### Cuantos usuarios hay por edad
+Esto puede servir para saber si hay que realizar campañas de marketing con un objetivo 
+en específico. 
+
+```{r, echo = FALSE}
+usu_edad <- dbGetQuery(conexion, 'select edad, count(edad) as edad1
+                       from usuario
+                       group by edad')
+gg5 <- ggplot(usu_edad, aes(x = edad, y = as.integer(edad1), fill = edad)) +
+  geom_bar(stat = 'identity') + labs(title = 'Cantidad de usuarios por edad', 
+                                     x = 'Edad', y = 'Cantidad de usuarios')
+gg5
+```
+
+
+
