@@ -6,13 +6,14 @@ from types import NoneType
 import psycopg2
 from psycopg2 import extensions
 from datetime import datetime, timedelta, date
+import random
 
 root = Tk()
 root.title('App SmartWatch')
 host1 = "localhost"
 database1 = "Py3"
 user1 = "postgres"
-password1 = "Belmar.2017"
+password1 = "mepito"
 port1 = "5432"
 user2 = "usuariou1"
 password2 = "adminu1"
@@ -862,10 +863,141 @@ def validarAdminSeLogin():
 
             botonInstructores = Button(padmin, text='Editar instructores', bg='sky blue', font=("Helvetica", 18), command=AdmInstructor).grid(row=1,pady=10,padx=10)
             botonSesiones = Button(padmin, text='Editar sesiones', bg='sky blue', font=("Helvetica", 18), command=AdmSesion).grid(row=2,pady=10,padx=10)
+            botonSimulacion = Button(padmin, text='Simular', bg='sky blue', font=("Helvetica", 18), command=Simulacion).grid(row=3,pady=10,padx=10)
            
     except (Exception, psycopg2.Error) as error:
         loginNotif.config(fg="red", text= "Credenciales incorrectos")
         print(error)
+
+def Simulacion():
+
+    # def ejecutarSim():
+    #     fecha = datetime.strptime(simFecha.get(), '%Y-%m-%d')
+    #     cantUser = int(simUser.get())
+
+    #     conn = psycopg2.connect(
+    #         host = host1,
+    #         database = database1,
+    #         user = user1,
+    #         password = password1,
+    #         port = port1)
+
+    #     c = conn.cursor()
+
+    #     c.execute('''
+    #     SELECT nombre_instructor FROM instructor
+    #     ''')
+
+    #     prevListaInstructor = [item for t in c.fetchall() for item in t]
+
+    #     c = conn.cursor()
+
+    #     c.execute('''
+    #     SELECT id_usuario FROM usuario
+    #     LIMIT %s
+    #     ''', (cantUser,))
+
+    #     prevListaCat = ['Aerobicos', 'Zumba', 'Salsa', 'Pesas' , 'Cardio', 'Yoga', 'Fortalecimiento', 'Resistencia']
+    #     listaUsuario = [item for t in c.fetchall() for item in t]
+    #     print(listaUsuario)
+    #     listaInicio = []
+    #     listaFin = []
+    #     listaCat = []
+    #     listaInstructor = []
+    #     listaCal = []
+    #     listaRitmo = []
+
+    #     for n in range(cantUser):
+    #         print(1)
+    #         inicio = fecha.replace(hour=random.randint(6,22), minute=random.randint(0,59))
+    #         inicioString = inicio.strftime('%Y-%m-%d %H:%M:%S')
+    #         fin = inicio + timedelta(minutes=random.randint(30,60))
+    #         finString = fin.strftime('%Y-%m-%d %H:%M:%S')
+    #         cat = random.choice(prevListaCat)
+    #         inst = random.choice(prevListaInstructor)
+    #         cal = random.randint(150,300)
+    #         ritmo = random.randint(110,180)
+
+    #         listaInicio.append(inicioString)
+    #         listaFin.append(finString)
+    #         listaCat.append(cat)
+    #         listaInstructor.append(inst)
+    #         listaCal.append(cal)
+    #         listaRitmo.append(ritmo)
+        
+    #     data = list(zip(listaUsuario,listaInicio,listaFin,listaCat,listaInstructor,listaCal,listaRitmo))
+    #     print(data)
+
+    #     pSim = Toplevel(root)
+    #     pSim.title("Simulador de actividad")
+    #     pSim.geometry("1000x300")
+
+    #     style = ttk.Style()
+    #     style.theme_use('default')
+    #     style.configure("Treeview",
+    #         background="#D3D3D3",
+    #         foreground="black",
+    #         rowheight=25,
+    #         fieldbackground="#D3D3D3")
+
+    #     style.map('Treeview',
+    #         background=[('selected', "#347083")])
+        
+    #     tree_frame = Frame(pSim)
+    #     tree_frame.pack(pady=10)
+
+    #     tree_scroll = Scrollbar(tree_frame)
+    #     tree_scroll.pack(side=RIGHT, fill=Y)
+
+    #     my_tree = ttk.Treeview(tree_frame, yscrollcommand=tree_scroll.set, selectmode="extended")
+    #     my_tree.pack()
+
+    #     tree_scroll.config(command=my_tree.yview)
+
+    #     my_tree['columns'] = ("Usuario", "Inicio", "Fin", "Categoria", "Instructor", "Calorias quemadas", "Ritmo promedio")
+
+    #     my_tree.column("#0", width=0, stretch=NO)
+    #     my_tree.column("Usuario", anchor=W, width=140)
+    #     my_tree.column("Inicio", anchor=W, width=140)
+    #     my_tree.column("Fin", anchor=W, width=140)
+    #     my_tree.column("Categoria", anchor=W, width=140)
+    #     my_tree.column("Instructor", anchor=W, width=140)
+    #     my_tree.column("Calorias quemadas", anchor=W, width=140)
+    #     my_tree.column("Ritmo promedio", anchor=W, width=140)
+
+    #     my_tree.heading("#0", text="", anchor=W)
+    #     my_tree.heading("Usuario", text="Usuario", anchor=W)
+    #     my_tree.heading("Inicio", text="Inicio", anchor=W)
+    #     my_tree.heading("Fin", text="Fin", anchor=W)
+    #     my_tree.heading("Categoria", text="Categoria", anchor=W)
+    #     my_tree.heading("Instructor", text="Instructor", anchor=W)
+    #     my_tree.heading("Calorias quemadas", text="Calorias quemadas", anchor=W)
+    #     my_tree.heading("Ritmo promedio", text="Ritmo promedio", anchor=W)
+
+    #     my_tree.tag_configure('oddrow', background="white")
+    #     my_tree.tag_configure('evenrow', background="lightblue")
+
+    #     count = 0
+
+    #     for record in data:
+    #         if count % 2 == 0:
+    #             my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1], record[2], record[3], record[4], record[5], record[6]), tags=('evenrow',))
+    #         else:
+    #             my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1], record[2], record[3], record[4], record[5], record[6]), tags=('oddrow',))
+            
+    #         count += 1
+
+    pingresarSim = Toplevel(root)
+    pingresarSim.title("Ingresar fecha y cantidad")
+    l_ingresarFecha = Label(pingresarSim, text="Fecha (YYYY-MM-DD)")
+    l_ingresarFecha.grid(row= 0, column= 0, pady= 10, padx= 10)
+    l_ingresarCant = Label(pingresarSim, text="Cantidad de usuarios")
+    l_ingresarCant.grid(row= 1, column= 0, pady= 10, padx= 10)
+    simFecha = Entry(pingresarSim, font=("Helvetica", 18))
+    simFecha.grid(row=0, column=1, pady=10, padx=10)
+    simUser = Entry(pingresarSim, font=("Helvetica", 18))
+    simUser.grid(row=1, column=1, pady=10, padx=10)
+    #botonSubmit = Button(pingresarSim, text='Simular', bg='sky blue', font=("Helvetica", 18), command=ejecutarSim).grid(row=2, column=1, pady=10, padx=10)
 
 def SuperAdminLogin():
     global adminUser
@@ -1878,16 +2010,16 @@ def AdmUsuario():
 
         c = conn.cursor()
 
-        c.execute("SELECT * FROM sesion")
+        c.execute("SELECT * FROM usuario")
         data = c.fetchall()
         global count
         count = 0
 
         for record in data:
             if count % 2 == 0:
-                my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1], record[2], record[3], record[4]), tags=('evenrow',))
+                my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1], record[2], record[3], record[4], record[5], record[6], record[7]), tags=('evenrow',))
             else:
-                my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1], record[2], record[3], record[4]), tags=('oddrow',))
+                my_tree.insert(parent='', index='end', iid=count, text='', values=(record[0], record[1], record[2], record[3], record[4], record[5], record[6], record[7]), tags=('oddrow',))
             
             count += 1
         
@@ -3374,7 +3506,7 @@ def reportes():
     bitacora_button.pack(padx = 20)
     
 
-crearTablas()
+#crearTablas()
 #insertAdm()
 #CreacionGrupos()
 #crearPrivilegios()
