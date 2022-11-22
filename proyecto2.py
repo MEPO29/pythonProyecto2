@@ -10,9 +10,9 @@ from datetime import datetime, timedelta, date
 root = Tk()
 root.title('App SmartWatch')
 host1 = "localhost"
-database1 = "Proyecto3"
+database1 = "Py3"
 user1 = "postgres"
-password1 = "admin"
+password1 = "Belmar.2017"
 port1 = "5432"
 user2 = "usuariou1"
 password2 = "adminu1"
@@ -159,12 +159,15 @@ def crearPrivilegios():
 
     c.execute('''
 
-    GRANT ALL PRIVILEGES ON table adminu, usuario, progreso, suscripcion TO admin_usuarios WITH GRANT OPTION; 
-    GRANT INSERT ON log_admin to admin_usuarios;
-    GRANT ALL PRIVILEGES ON table  admins, sesion, registro_sesion, instructor TO admin_sesiones WITH GRANT OPTION; 
-    GRANT INSERT ON log_admin to admin_sesiones;
-    GRANT ALL PRIVILEGES ON table usuario, sesion ,suscripcion , registro_sesion , adminu, admins, superadm  , instructor, log_admin , progreso  TO super_admin with GRANT OPTION;
-
+    --GRANT ALL PRIVILEGES ON table adminu, usuario, progreso, suscripcion TO admin_usuarios WITH GRANT OPTION; 
+    --GRANT INSERT ON log_admin to admin_usuarios;
+    --GRANT ALL PRIVILEGES ON table  admins, sesion, registro_sesion, instructor TO admin_sesiones WITH GRANT OPTION; 
+    --GRANT INSERT ON log_admin to admin_sesiones;
+    --GRANT ALL PRIVILEGES ON table usuario, sesion ,suscripcion , registro_sesion , adminu, admins, superadm  , instructor, log_admin , progreso  TO super_admin with GRANT OPTION;
+    --GRANT create on schema public to super_admin;
+    --Alter table if exists consulta1 owner to super_admin;
+    --Alter table if exists consulta2 owner to super_admin;
+    --Alter table if exists consulta3 owner to super_admin;
     ''')
 
     conn.commit()
@@ -226,6 +229,49 @@ def CreacionRoles():
 
     conn.commit()
     conn.close()
+
+    
+def crearVista():
+    conn = psycopg2.connect(
+        host = host1,
+        database = database1,
+        user = user1,
+        password = password1,
+        port = port1
+
+    )
+
+    c = conn.cursor()
+
+    c.execute('''
+    --Create  view consulta1 as
+    --SELECT  extract (day from fecha_hora_inicio) as dia, count(id_sesion) as conteo FROM sesion 
+	--WHERE extract(hour from fecha_hora_inicio) between 15 and 20 
+    --GROUP BY dia 
+    --ORDER BY conteo desc
+    --LIMIT 5 ;
+
+    --Create view consulta2 as
+    --SELECT  fk_nombre_instructor, count(fk_nombre_instructor)as cuenta 
+    --FROM sesion
+    --where extract ( month from fecha_hora_inicio) = 10
+    --GROUP BY fk_nombre_instructor
+    --ORDER BY cuenta desc
+    --LIMIT 10 ;
+
+    Create view consulta3 as
+    select usuario, count(usuario) as cantidad_usuario  
+    from log_admin 
+    group by usuario
+
+
+
+
+    ''')
+
+    conn.commit()
+    conn.close()
+
 
 def funcionReg():
     conn = psycopg2.connect(
@@ -2976,6 +3022,7 @@ crearTablas()
 #crearPrivilegios()
 #CreacionRoles()
 crearTriggers()
+crearVista()
 Button(root, text='Login', command= login, font=("Helvetica", 24)).grid(row=0)
 Button(root, text='Registro', command=signup, font=("Helvetica", 24)).grid(row=1)
 Button(root, text='Admin', command=tiposAdmin, font=("Helvetica", 24)).grid(row=2)
