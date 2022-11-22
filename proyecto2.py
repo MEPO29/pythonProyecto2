@@ -954,28 +954,28 @@ def Simulacion():
 
         tree_scroll.config(command=my_tree.yview)
 
-    #     my_tree['columns'] = ("Usuario", "Inicio", "Fin", "Categoria", "Instructor", "Calorias quemadas", "Ritmo promedio")
+        my_tree['columns'] = ("Usuario", "Inicio", "Fin", "Categoria", "Instructor", "Calorias quemadas", "Ritmo promedio")
 
-    #     my_tree.column("#0", width=0, stretch=NO)
-    #     my_tree.column("Usuario", anchor=W, width=140)
-    #     my_tree.column("Inicio", anchor=W, width=140)
-    #     my_tree.column("Fin", anchor=W, width=140)
-    #     my_tree.column("Categoria", anchor=W, width=140)
-    #     my_tree.column("Instructor", anchor=W, width=140)
-    #     my_tree.column("Calorias quemadas", anchor=W, width=140)
-    #     my_tree.column("Ritmo promedio", anchor=W, width=140)
+        my_tree.column("#0", width=0, stretch=NO)
+        my_tree.column("Usuario", anchor=W, width=140)
+        my_tree.column("Inicio", anchor=W, width=140)
+        my_tree.column("Fin", anchor=W, width=140)
+        my_tree.column("Categoria", anchor=W, width=140)
+        my_tree.column("Instructor", anchor=W, width=140)
+        my_tree.column("Calorias quemadas", anchor=W, width=140)
+        my_tree.column("Ritmo promedio", anchor=W, width=140)
 
-    #     my_tree.heading("#0", text="", anchor=W)
-    #     my_tree.heading("Usuario", text="Usuario", anchor=W)
-    #     my_tree.heading("Inicio", text="Inicio", anchor=W)
-    #     my_tree.heading("Fin", text="Fin", anchor=W)
-    #     my_tree.heading("Categoria", text="Categoria", anchor=W)
-    #     my_tree.heading("Instructor", text="Instructor", anchor=W)
-    #     my_tree.heading("Calorias quemadas", text="Calorias quemadas", anchor=W)
-    #     my_tree.heading("Ritmo promedio", text="Ritmo promedio", anchor=W)
+        my_tree.heading("#0", text="", anchor=W)
+        my_tree.heading("Usuario", text="Usuario", anchor=W)
+        my_tree.heading("Inicio", text="Inicio", anchor=W)
+        my_tree.heading("Fin", text="Fin", anchor=W)
+        my_tree.heading("Categoria", text="Categoria", anchor=W)
+        my_tree.heading("Instructor", text="Instructor", anchor=W)
+        my_tree.heading("Calorias quemadas", text="Calorias quemadas", anchor=W)
+        my_tree.heading("Ritmo promedio", text="Ritmo promedio", anchor=W)
 
-    #     my_tree.tag_configure('oddrow', background="white")
-    #     my_tree.tag_configure('evenrow', background="lightblue")
+        my_tree.tag_configure('oddrow', background="white")
+        my_tree.tag_configure('evenrow', background="lightblue")
 
     #     count = 0
 
